@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>6sense FY27 Product Roadmap Explorer</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#F5F5F5;min-height:100vh;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
+
+.hdr{background:#192232;padding:20px 24px 16px;position:relative;overflow:hidden}
+.hdr::before{content:'';position:absolute;top:-30px;right:-20px;width:130px;height:130px;border:2px solid rgba(19,187,178,0.15);clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);pointer-events:none}
+.hdr::after{content:'';position:absolute;bottom:-20px;right:80px;width:75px;height:75px;border:1.5px solid rgba(94,247,235,0.1);clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);pointer-events:none}
+.hdr-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.logo-row{display:flex;align-items:center;gap:9px;margin-bottom:9px}
+.logo-txt{font-size:18px;font-weight:700;color:#fff;letter-spacing:-0.2px}
+.logo-teal{color:#13BBB2}
+.hdr-eye{font-size:10px;color:#13BBB2;letter-spacing:2px;text-transform:uppercase;margin-bottom:3px}
+.hdr-title{font-size:22px;font-weight:700;color:#fff;line-height:1.2}
+.hdr-sub{font-size:12px;color:rgba(255,255,255,0.5);margin-top:3px}
+.hdr-disclaimer{font-size:10px;color:rgba(255,255,255,0.3);margin-top:8px;max-width:580px;line-height:1.5;font-style:italic}
+
+.view-toggle{display:flex;gap:6px;align-items:center;flex-shrink:0;margin-top:4px;position:relative;z-index:2}
+.vtbtn{display:flex;align-items:center;gap:5px;padding:7px 14px;border-radius:6px;border:1.5px solid rgba(255,255,255,0.25);background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.65);font-size:12px;font-weight:500;cursor:pointer;transition:all .15s;outline:none;white-space:nowrap}
+.vtbtn svg{width:14px;height:14px;flex-shrink:0}
+.vtbtn:hover{border-color:#13BBB2;color:#13BBB2;background:rgba(19,187,178,0.1)}
+.vtbtn.active{background:#13BBB2;border-color:#13BBB2;color:#192232;font-weight:700}
+
+.outcome-tabs{display:flex;background:#fff;border-bottom:2px solid #e5e7eb;overflow-x:auto}
+.otab{flex:1;min-width:120px;padding:10px 8px;text-align:center;cursor:pointer;border:none;background:none;font-size:11px;font-weight:500;color:#6b7280;transition:all .15s;border-bottom:3px solid transparent;margin-bottom:-2px;white-space:nowrap;outline:none}
+.otab:hover{color:#13BBB2;background:#f0fdfb}
+.otab.active{color:#13BBB2;border-bottom-color:#13BBB2;font-weight:600}
+.otab-num{display:block;font-size:18px;font-weight:700;color:#13BBB2;line-height:1}
+.otab-lbl{display:block;font-size:10px;color:inherit;margin-top:2px;line-height:1.3}
+
+.stats-bar{background:#fff;display:flex;border-bottom:1px solid #e5e7eb}
+.stat{flex:1;padding:8px 10px;text-align:center;border-right:1px solid #e5e7eb}
+.stat:last-child{border-right:none}
+.stat-n{font-size:17px;font-weight:700;color:#13BBB2}
+.stat-l{font-size:9px;color:#6b7280;text-transform:uppercase;letter-spacing:0.5px;margin-top:1px}
+
+.filters{background:#fff;padding:9px 14px;border-bottom:1px solid #e5e7eb}
+.frow{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin-bottom:6px}
+.frow:last-child{margin-bottom:0}
+.flbl{font-size:10px;color:#6b7280;text-transform:uppercase;letter-spacing:0.8px;min-width:58px;flex-shrink:0}
+.fbtn{padding:3px 10px;font-size:11px;border-radius:20px;border:1.5px solid #d1d5db;background:#fff;color:#374151;cursor:pointer;transition:all .15s;white-space:nowrap;outline:none}
+.fbtn:hover{border-color:#13BBB2;color:#13BBB2;background:#f0fdfb}
+.fbtn.active{background:#13BBB2;border-color:#13BBB2;color:#fff;font-weight:600;box-shadow:0 0 0 3px rgba(19,187,178,0.2)}
+.fbtn:active{transform:scale(0.96)}
+
+.srch{padding:7px 14px;background:#fff;border-bottom:1px solid #e5e7eb}
+.srch input{width:100%;padding:6px 11px;border:1px solid #d1d5db;border-radius:6px;font-size:12px;color:#111827;outline:none}
+.srch input:focus{border-color:#13BBB2}
+.meta{padding:6px 14px 0;font-size:11px;color:#6b7280}
+
+/* CARD VIEW */
+#cardsGrid{padding:10px 14px 24px;display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px}
+#cardsGrid.hidden{display:none}
+
+.card{background:#fff;border-radius:9px;border:1px solid #e5e7eb;overflow:hidden;transition:border-color .15s,box-shadow .15s;cursor:pointer}
+.card:hover{border-color:#13BBB2;box-shadow:0 2px 8px rgba(19,187,178,0.1)}
+.ctop{padding:10px 13px 8px;border-bottom:1px solid #f3f4f6}
+.cpill{display:inline-block;font-size:9px;font-weight:500;padding:2px 7px;border-radius:3px;margin-bottom:5px;letter-spacing:0.3px}
+.o1{background:#e0f2f1;color:#005B5B}
+.o2{background:#e8eaf6;color:#2c3e80}
+.o3{background:#fbe9e7;color:#8b3a20}
+.o4{background:#e3f2fd;color:#005B5B}
+.ctitle{font-size:13px;font-weight:600;color:#192232;line-height:1.3;margin-bottom:2px}
+.cprod{font-size:11px;color:#13BBB2;font-style:italic}
+.ctheme{font-size:10px;color:#9ca3af;margin-top:1px}
+.cbody{padding:9px 13px 11px}
+.cdesc{font-size:11px;color:#4b5563;line-height:1.5;margin-bottom:8px}
+.cfooter{display:flex;flex-wrap:wrap;gap:4px;align-items:center}
+
+.badge{font-size:10px;font-weight:500;padding:2px 8px;border-radius:20px;white-space:nowrap}
+.b-ga{background:#13BBB2;color:#fff}
+.b-beta{background:#fff;color:#13BBB2;border:1.5px solid #13BBB2}
+.b-alpha{background:#fff;color:#9ca3af;border:1.5px dashed #d1d5db}
+.qtag{font-size:9px;padding:1px 6px;border-radius:20px;white-space:nowrap}
+.qtag-q1{background:#e0f2f1;color:#005B5B}
+.qtag-q2{background:#e8eaf6;color:#2c3e80}
+.qtag-q3{background:#fbe9e7;color:#8b3a20}
+.qtag-q4{background:#fef3c7;color:#92400e}
+
+.empty-msg{text-align:center;padding:40px 16px;color:#9ca3af}
+.empty-icon{font-size:28px;margin-bottom:7px}
+
+/* TIMELINE VIEW */
+#timelineWrap{display:none;padding:14px 14px 32px}
+#timelineWrap.visible{display:block}
+
+.tl-legend{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px;position:sticky;top:0;z-index:10;background:#F5F5F5;padding:6px 0 8px}
+.tl-qhdr{text-align:center;padding:8px 4px;border-radius:7px;font-size:11px;font-weight:700}
+.tl-qhdr.q1{background:#e0f2f1;color:#005B5B}
+.tl-qhdr.q2{background:#e8eaf6;color:#2c3e80}
+.tl-qhdr.q3{background:#fbe9e7;color:#8b3a20}
+.tl-qhdr.q4{background:#fef3c7;color:#92400e}
+.tl-qsub{display:block;font-size:9px;font-weight:400;opacity:0.75;margin-top:1px}
+
+.tl-section{margin-bottom:18px;border-radius:8px;overflow:hidden;border:1px solid #e5e7eb}
+.tl-section-hdr{display:flex;align-items:center;gap:8px;padding:9px 13px;background:#fff;border-bottom:1px solid #e5e7eb}
+.tl-section-name{font-size:12px;font-weight:700;color:#192232}
+.tl-section-count{font-size:11px;color:#9ca3af;font-weight:400}
+
+.tl-theme-block{}
+.tl-theme-label{background:#f9fafb;padding:5px 13px;font-size:10px;color:#6b7280;font-weight:600;text-transform:uppercase;letter-spacing:0.6px;border-bottom:1px solid #f3f4f6}
+.tl-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid #f3f4f6}
+.tl-row:last-child{border-bottom:none}
+.tl-cell{padding:7px 7px;border-right:1px solid #f3f4f6;min-height:36px}
+.tl-cell:last-child{border-right:none}
+
+.tl-chip{background:#fff;border:1px solid #e5e7eb;border-radius:6px;padding:6px 8px;cursor:pointer;transition:border-color .15s,box-shadow .15s;margin-bottom:5px}
+.tl-chip:last-child{margin-bottom:0}
+.tl-chip:hover{border-color:#13BBB2;box-shadow:0 1px 5px rgba(19,187,178,0.18)}
+.tl-chip.s-ga{border-top:2px solid #13BBB2}
+.tl-chip.s-beta{border-top:2px solid rgba(19,187,178,0.45)}
+.tl-chip.s-alpha{border-top:2px dashed #d1d5db}
+.tl-chip-title{font-size:11px;font-weight:600;color:#192232;line-height:1.3}
+.tl-chip-prod{font-size:10px;color:#13BBB2;font-style:italic;margin-top:1px}
+.tl-chip-foot{display:flex;gap:3px;margin-top:4px;flex-wrap:wrap}
+.tl-continues{font-size:10px;color:#c0c8d0;padding:4px 6px}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(25,34,50,0.55);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .2s}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{background:#fff;border-radius:12px;max-width:500px;width:100%;max-height:85vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.25);transform:translateY(12px);transition:transform .2s;position:relative}
+.modal-overlay.open .modal{transform:translateY(0)}
+.modal-hdr{padding:16px 44px 12px 18px;border-bottom:1px solid #f3f4f6}
+.modal-pill{display:inline-block;font-size:9px;font-weight:500;padding:2px 7px;border-radius:3px;margin-bottom:6px;letter-spacing:0.3px}
+.modal-title{font-size:16px;font-weight:700;color:#192232;line-height:1.3;margin-bottom:3px}
+.modal-prod{font-size:12px;color:#13BBB2;font-style:italic}
+.modal-theme-txt{font-size:11px;color:#9ca3af;margin-top:2px}
+.modal-body{padding:14px 18px 18px}
+.modal-desc{font-size:13px;color:#374151;line-height:1.6;margin-bottom:14px}
+.modal-meta{display:flex;flex-wrap:wrap;gap:6px}
+.modal-close{position:absolute;top:12px;right:14px;background:none;border:none;font-size:22px;color:#9ca3af;cursor:pointer;line-height:1;padding:2px 6px;border-radius:4px;z-index:1}
+.modal-close:hover{background:#f3f4f6;color:#374151}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-top">
+    <div>
+      <div class="logo-row">
+        <span class="logo-txt"><span class="logo-teal">6</span>sense</span>
+      </div>
+      <div class="hdr-eye">FY27 Product Roadmap</div>
+      <div class="hdr-title">Product Roadmap Explorer</div>
+      <div class="hdr-sub">4 Strategic Outcomes &nbsp;·&nbsp; 16 Themes &nbsp;·&nbsp; 74 Initiatives</div>
+    </div>
+    <div class="view-toggle">
+      <button class="vtbtn active" id="btnCards">
+        <svg viewBox="0 0 16 16" fill="currentColor"><rect x="1" y="1" width="6" height="6" rx="1"/><rect x="9" y="1" width="6" height="6" rx="1"/><rect x="1" y="9" width="6" height="6" rx="1"/><rect x="9" y="9" width="6" height="6" rx="1"/></svg>
+        Cards
+      </button>
+      <button class="vtbtn" id="btnTimeline">
+        <svg viewBox="0 0 16 16" fill="currentColor"><rect x="1" y="2" width="14" height="2" rx="1"/><rect x="1" y="7" width="10" height="2" rx="1"/><rect x="1" y="12" width="12" height="2" rx="1"/></svg>
+        Timeline
+      </button>
+    </div>
+  </div>
+  <div class="hdr-disclaimer">This roadmap represents our current view of where we are investing. It is not a commitment to specific features or delivery dates. Priorities will evolve as we learn, ship, and respond to market conditions.</div>
+</div>
+
+<!-- OUTCOME TABS -->
+<div class="outcome-tabs" id="outcomeTabs">
+  <button class="otab active" data-o="all"><span class="otab-num">74</span><span class="otab-lbl">All Initiatives</span></button>
+  <button class="otab" data-o="1"><span class="otab-num">11</span><span class="otab-lbl">Fully Understand Buyers</span></button>
+  <button class="otab" data-o="2"><span class="otab-num">15</span><span class="otab-lbl">Focus on Right Accounts</span></button>
+  <button class="otab" data-o="3"><span class="otab-num">34</span><span class="otab-lbl">Act with Less Friction</span></button>
+  <button class="otab" data-o="4"><span class="otab-num">14</span><span class="otab-lbl">Trust at Scale</span></button>
+</div>
+
+
+
+<!-- FILTERS -->
+<div class="filters">
+  <div class="frow">
+    <span class="flbl">Quarter</span>
+    <button class="fbtn active" data-f="quarter" data-v="all">All</button>
+    <button class="fbtn" data-f="quarter" data-v="Q1">Q1 FY27</button>
+    <button class="fbtn" data-f="quarter" data-v="Q2">Q2 FY27</button>
+    <button class="fbtn" data-f="quarter" data-v="Q3">Q3 FY27</button>
+    <button class="fbtn" data-f="quarter" data-v="Q4">Q4 FY27</button>
+  </div>
+  <div class="frow">
+    <span class="flbl">Product</span>
+    <button class="fbtn active" data-f="product" data-v="all">All</button>
+    <button class="fbtn" data-f="product" data-v="Signalverse">Signalverse</button>
+    <button class="fbtn" data-f="product" data-v="Revenue Marketing">Revenue Marketing</button>
+    <button class="fbtn" data-f="product" data-v="Sales Intelligence">Sales Intelligence</button>
+    <button class="fbtn" data-f="product" data-v="Intelligent Workflows">Intelligent Workflows</button>
+    <button class="fbtn" data-f="product" data-v="Enterprise Foundations">Enterprise Foundations</button>
+    <button class="fbtn" data-f="product" data-v="Predictive">Predictive</button>
+    <button class="fbtn" data-f="product" data-v="RevvyAI">RevvyAI</button>
+  </div>
+  <div class="frow">
+    <span class="flbl">Status</span>
+    <button class="fbtn active" data-f="status" data-v="all">All</button>
+    <button class="fbtn" data-f="status" data-v="GA">GA</button>
+    <button class="fbtn" data-f="status" data-v="Beta">Beta</button>
+    <button class="fbtn" data-f="status" data-v="Alpha">Alpha</button>
+  </div>
+</div>
+
+<div class="srch"><input type="text" id="srchIn" placeholder="Search by name, description, product or theme..."/></div>
+<div class="meta" id="metaTxt"></div>
+
+<!-- CARD VIEW -->
+<div id="cardsGrid"></div>
+
+<!-- TIMELINE VIEW -->
+<div id="timelineWrap"></div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" id="modalBox">
+    <button class="modal-close" id="modalClose">&#215;</button>
+    <div class="modal-hdr">
+      <div class="modal-pill" id="mPill"></div>
+      <div class="modal-title" id="mTitle"></div>
+      <div class="modal-prod" id="mProd"></div>
+      <div class="modal-theme-txt" id="mTheme"></div>
+    </div>
+    <div class="modal-body">
+      <div class="modal-desc" id="mDesc"></div>
+      <div class="modal-meta" id="mMeta"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+var ITEMS=[
+  {title:"Contact Data Enrichment",product:"Signalverse",outcome:"1",outcomeName:"Fully Understand Your Buyers",theme:"Data Quality you can count on",desc:"Adding new data vendors increases the ratio of A/A+ emails and the deliverability to those emails.",status:"GA",quarters:["Q2","Q3"]},
+  {title:"Improved Email Data",product:"Signalverse",outcome:"1",outcomeName:"Fully Understand Your Buyers",theme:"Data Quality you can count on",desc:"Improving email pattern prediction accuracy will increase the reliability of contact data while reducing dependence on third-party email validation services.",status:"GA",quarters:["Q2"]},
+  {title:"Firmographic Improvements in Coverage & Accuracy",product:"Signalverse",outcome:"1",outcomeName:"Fully Understand Your Buyers",theme:"Data Quality you can count on",desc:"Segment and analyze accounts with more complete, accurate firmographic data — from size and industry to hierarchy and status.",status:"GA",quarters:["Q2","Q3","Q4"]},
+  {title:"Comprehensive People Matching",product:"Signalverse",outcome:"1",outcomeName:"Fully Understand Your Buyers",theme:"Data Quality you can count on",desc:"Improve CRM contact accuracy by reliably matching the right people to the right accounts.",status:"GA",quarters:["Q2"]},
+  {title:"Human-Verified Data Corrections",product:"Signalverse",outcome:"1",outcomeName:"Fully Understand Your Buyers",theme:"Data Quality you can count on",desc:"Continuously improve data accuracy by incorporating expert human review to validate and correct core data — so teams can trust the data powering every decision.",status:"Beta",quarters:["Q3","Q4"]},
+  {title:"Build the Full Buying Group",product:"Signalverse",outcome:"1",outcomeName:"Fully Understand Your Buyers",theme:"Identify the full buying group",desc:"Buying groups are dynamic. Define, identify, and operationalize distinct buying groups across 6sense products, not just in filters.",status:"Beta",quarters:["Q3"]},
+  {title:"Know What Technology Your Buyers Actually Use",product:"Signalverse",outcome:"1",outcomeName:"Fully Understand Your Buyers",theme:"Enhanced Technographic Intelligence",desc:"Get clearer, more actionable technographic insights with consistent, easy-to-use attributes everywhere you work.",status:"GA",quarters:["Q3"]},
+  {title:"Enhanced APIs: Intent, Techno, Company, People & More",product:"Signalverse",outcome:"1",outcomeName:"Fully Understand Your Buyers",theme:"Use transparent 6sense data across your stack",desc:"Access intent, people, company, web activity and signal data through robust APIs to power your own workflows and systems.",status:"GA",quarters:["Q1","Q2","Q3","Q4"]},
+  {title:"Use Verified Data Across Your Stack",product:"Signalverse",outcome:"1",outcomeName:"Fully Understand Your Buyers",theme:"Use transparent 6sense data across your stack",desc:"Access verified company and people data directly inside applications — no extra steps required.",status:"Beta",quarters:["Q2","Q3"]},
+  {title:"Pixel Performance Data Packs",product:"Signalverse",outcome:"1",outcomeName:"Fully Understand Your Buyers",theme:"Use transparent 6sense data across your stack",desc:"Track and analyze advertising performance across external ad platforms using simple tracking pixels, and access consistent, account-level engagement data through Data Packs.",status:"GA",quarters:["Q1"]},
+  {title:"Signal Expansion",product:"Signalverse",outcome:"1",outcomeName:"Fully Understand Your Buyers",theme:"Use transparent 6sense data across your stack",desc:"Build a market-leading Signals experience that lets customers choose, customize, and combine the GTM triggers that matter most — all in one place.",status:"Beta",quarters:["Q2","Q3"]},
+  {title:"AI-Recommended Leads for Advertising",product:"Revenue Marketing",outcome:"2",outcomeName:"Focus on the Right Accounts & People",theme:"Smarter Advertising Activation",desc:"Automatically identify and activate the most relevant buying-group members within target accounts to improve campaign performance.",status:"Alpha",quarters:["Q1","Q2"]},
+  {title:"Seamless Google Ads Activation",product:"Revenue Marketing",outcome:"2",outcomeName:"Focus on the Right Accounts & People",theme:"Smarter Advertising Activation",desc:"Reliably sync segments to Google Ads with improved scale, performance, and account management support.",status:"GA",quarters:["Q4"]},
+  {title:"Clearer LinkedIn Campaign Visibility",product:"Revenue Marketing",outcome:"2",outcomeName:"Focus on the Right Accounts & People",theme:"Smarter Advertising Activation",desc:"See advertising performance across multi-country LinkedIn campaigns with campaign- and country-level insights to reduce reporting blind spots.",status:"GA",quarters:["Q3"]},
+  {title:"Improved LinkedIn Media Data Packs",product:"Revenue Marketing",outcome:"2",outcomeName:"Focus on the Right Accounts & People",theme:"Smarter Advertising Activation",desc:"Use cleaner, easier-to-interpret LinkedIn media fields for reliable analytics and reporting.",status:"GA",quarters:["Q3"]},
+  {title:"More Accurate LinkedIn Account Reporting",product:"Revenue Marketing",outcome:"2",outcomeName:"Focus on the Right Accounts & People",theme:"Smarter Advertising Activation",desc:"Reduce unknown accounts and get clearer, more trustworthy account-level insights from LinkedIn advertising campaigns.",status:"GA",quarters:["Q3"]},
+  {title:"Transparent Scores in Predictive",product:"Predictive",outcome:"2",outcomeName:"Focus on the Right Accounts & People",theme:"Configure buying stages to target the right ICP",desc:"See why scores change so teams can trust the data, understand what's driving outcomes, and act with confidence.",status:"GA",quarters:["Q3"]},
+  {title:"ICP Builder (Non-Predictive)",product:"Predictive",outcome:"2",outcomeName:"Focus on the Right Accounts & People",theme:"Configure buying stages to target the right ICP",desc:"Automatically score accounts against essential ICP attributes to focus teams on the right buyers from day one.",status:"GA",quarters:["Q2"]},
+  {title:"Configurable Buying Stages",product:"Predictive",outcome:"2",outcomeName:"Focus on the Right Accounts & People",theme:"Configure buying stages to target the right ICP",desc:"Define buying stages that match how your customers actually buy — so teams prioritize and engage with shared confidence.",status:"GA",quarters:["Q4"]},
+  {title:"Accurate Account & People Matching",product:"Enterprise Foundations",outcome:"2",outcomeName:"Focus on the Right Accounts & People",theme:"Segment people and audiences accurately",desc:"Reliably match accounts and people to the 6sense identity graph programmatically (API) so targeting and analytics start with trusted data.",status:"GA",quarters:["Q3"]},
+  {title:"People-Based Segmentation",product:"6sense Platform",outcome:"2",outcomeName:"Focus on the Right Accounts & People",theme:"Segment people and audiences accurately",desc:"Target, activate, and analyze buyers at the individual level — not just the account.",status:"Beta",quarters:["Q2","Q3"]},
+  {title:"Segments API",product:"Revenue Marketing",outcome:"2",outcomeName:"Focus on the Right Accounts & People",theme:"Segment people and audiences accurately",desc:"Keep segments automatically aligned with your CDP, data warehouse, and GTM systems programmatically (API) — so targeting stays current and activation is seamless.",status:"Beta",quarters:["Q1","Q2"]},
+  {title:"Segment Account Exclusions",product:"Revenue Marketing",outcome:"2",outcomeName:"Focus on the Right Accounts & People",theme:"Prioritize accounts and risk effectively",desc:"Remove accounts you know aren't a priority so focus, reporting, and workflows stay aligned on what matters.",status:"Beta",quarters:["Q1","Q2"]},
+  {title:"Early Deal Risk Visibility",product:"Sales Intelligence",outcome:"2",outcomeName:"Focus on the Right Accounts & People",theme:"Prioritize accounts and risk effectively",desc:"Give ops early insight into at-risk opportunities to improve forecasts and help sales focus on deals most likely to slip.",status:"Beta",quarters:["Q3","Q4"]},
+  {title:"Proactive Competitive Threat Alerts",product:"Sales Intelligence",outcome:"2",outcomeName:"Focus on the Right Accounts & People",theme:"Prioritize accounts and risk effectively",desc:"Get notified when competitor activity puts key accounts or deals at risk — across the web app, Chrome Extension, and alerts.",status:"Beta",quarters:["Q3","Q4"]},
+  {title:"Smarter Contact Unlocking",product:"Sales Intelligence",outcome:"2",outcomeName:"Focus on the Right Accounts & People",theme:"Prioritize accounts and risk effectively",desc:"Spend credits only when the contact data you need is actually available.",status:"GA",quarters:["Q1"]},
+  {title:"RevvyAI in Marketing",product:"RevvyAI",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Better Outreach with AI Agents",desc:"Use AI agents to answer questions, analyze performance, and generate insights: 6QA Analyst (Marketing Insights), Keyword Agent, and Campaign Analyst (Advertising).",status:"Beta",quarters:["Q1","Q2"]},
+  {title:"RevvyAI Prioritization Dashboard",product:"RevvyAI",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Better Outreach with AI Agents",desc:"Help sellers quickly identify and focus on the highest-priority accounts by combining intent, signals, fit, and AI-driven recommendations in a lightweight, action-oriented view.",status:"GA",quarters:["Q4"]},
+  {title:"AI-Powered Email Personalization v2",product:"Revenue Marketing",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Better Outreach with AI Agents",desc:"Extend the generation of relevant, personalized email content using buyer intent, engagement, and context — so outreach feels timely, human, and scalable.",status:"Beta",quarters:["Q4"]},
+  {title:"Conversational Custom Scenarios v2",product:"Revenue Marketing",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Better Outreach with AI Agents",desc:"Use a conversational interface to create and run custom scenarios — unlocking new use cases without complex setup or technical expertise.",status:"Beta",quarters:["Q4"]},
+  {title:"Gong Call Summaries in 6sense",product:"Sales Intelligence",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Better Outreach with AI Agents",desc:"Use conversation intelligence to prioritize accounts, personalize outreach, and act faster — without leaving 6sense.",status:"GA",quarters:["Q4"]},
+  {title:"LLM-Powered Workflow Nodes",product:"Intelligent Workflows",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Better Outreach with AI Agents",desc:"Use AI to extract structured insights from unstructured content (like job posts or press releases) and automate routing and decisions.",status:"Beta",quarters:["Q3","Q4"]},
+  {title:"Product-Aware Workflow Creation",product:"Intelligent Workflows",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Automate workflows with signal-triggered intelligence",desc:"Select the relevant product from your stack while building workflows — so setup is simpler and workflows align to the right GTM use case from the start.",status:"GA",quarters:["Q1"]},
+  {title:"Audience Workflows Usability & Adoption",product:"Intelligent Workflows",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Automate workflows with signal-triggered intelligence",desc:"Make workflows easier to build, publish, and manage — so teams can activate automation with confidence and less friction.",status:"GA",quarters:["Q1","Q2"]},
+  {title:"Workflow Preview & Simulation",product:"Intelligent Workflows",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Automate workflows with signal-triggered intelligence",desc:"Preview and simulate workflows before activation — so teams can validate logic, routing, and impact before going live.",status:"Beta",quarters:["Q3","Q4"]},
+  {title:"Acquire & Push New Contacts via Workflows",product:"Intelligent Workflows",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Automate workflows with signal-triggered intelligence",desc:"Automatically acquire net-new contacts and push them into sales engagement tools — so teams move from signal to sequence without manual handoffs.",status:"GA",quarters:["Q3"]},
+  {title:"Trigger-based Workflows",product:"Intelligent Workflows",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Automate workflows with signal-triggered intelligence",desc:"Delivers a complete real-time orchestration system where any meaningful buyer signal — growth, change, intent, or market movement — can trigger an automated workflow.",status:"Beta",quarters:["Q2","Q3"]},
+  {title:"Chrome Extension for HubSpot CRM",product:"Sales Intelligence",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Connect seamlessly with CRM, MAP & Integrations",desc:"Access 6sense insights and actions directly inside HubSpot CRM record pages to keep prospecting and enrichment in one flow.",status:"GA",quarters:["Q1"]},
+  {title:"Eloqua OAuth Authentication",product:"Enterprise Foundations",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Connect seamlessly with CRM, MAP & Integrations",desc:"Add OAuth authentication for Eloqua so customers can connect securely, reduce credential issues, and manage authentication more reliably over time.",status:"GA",quarters:["Q3"]},
+  {title:"Enhanced CRM Contact Matching",product:"Sales Intelligence",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Connect seamlessly with CRM, MAP & Integrations",desc:"Improve people-to-account matching — so reps see accurate activity, insights, and recommendations tied to the right CRM records.",status:"Beta",quarters:["Q1","Q3"]},
+  {title:"Export Company Hierarchy to Salesforce",product:"Sales Intelligence",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Connect seamlessly with CRM, MAP & Integrations",desc:"Push full company hierarchy data into Salesforce — so teams work from a complete and accurate account structure.",status:"GA",quarters:["Q3"]},
+  {title:"Export to Salesforce Campaigns",product:"Sales Intelligence",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Connect seamlessly with CRM, MAP & Integrations",desc:"Send accounts and contacts directly into Salesforce Campaigns — improving activation, tracking, and attribution.",status:"GA",quarters:["Q2"]},
+  {title:"Permission Controls for Salesforce & Salesloft",product:"Sales Intelligence",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Connect seamlessly with CRM, MAP & Integrations",desc:"Give admins fine-grained control over what users can see and do inside Salesforce and Salesloft embedded experiences.",status:"GA",quarters:["Q1"]},
+  {title:"Real-Time MAP Activation for Eloqua & Pardot",product:"Intelligent Workflows",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Connect seamlessly with CRM, MAP & Integrations",desc:"Trigger workflows and activate accounts and contacts in Eloqua and Pardot in near real time — so teams can respond immediately to buyer behavior.",status:"GA",quarters:["Q3"]},
+  {title:"CRM vs 6sense Data Differentiation",product:"Sales Intelligence",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Increase Seller Productivity",desc:"Visually distinguish CRM-sourced from 6sense-generated data — freshness, origin, and trust at a glance.",status:"GA",quarters:["Q2"]},
+  {title:"CSV Export from Persona Map",product:"Sales Intelligence",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Increase Seller Productivity",desc:"Download persona-level mappings even with CRM sync enabled.",status:"GA",quarters:["Q2"]},
+  {title:"Dashboard UX Enhancements (SI)",product:"Sales Intelligence",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Increase Seller Productivity",desc:"Streamline the SI dashboard to help reps find accounts and take action with fewer clicks.",status:"GA",quarters:["Q2"]},
+  {title:"Salesloft Export & Cadence Controls",product:"Sales Intelligence",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Increase Seller Productivity",desc:"Improving flexibility and control for Salesloft users by allowing tag assignment during export and cadence selection.",status:"GA",quarters:["Q2"]},
+  {title:"RevvyAI in Sales Intelligence",product:"RevvyAI",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Increase Seller Productivity",desc:"An embedded RevvyAI experience that provides AI-powered guidance, answers, and contextual insights directly on account and people detail pages.",status:"GA",quarters:["Q1"]},
+  {title:"Improve Signal/Activity Visibility and Usability",product:"Sales Intelligence",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Increase Seller Productivity",desc:"Give more streamlined signals that have clear recommended actions tied to them.",status:"GA",quarters:["Q3"]},
+  {title:"Lists & Discovery Filter Enhancements",product:"Sales Intelligence",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Increase Seller Productivity",desc:"Retaining input fields for List Enrichment, filters save in Discovery, and support for Blank/Not Blank CRM fields in filters.",status:"GA",quarters:["Q2"]},
+  {title:"Reports Landing Page UX Enhancements",product:"Revenue Marketing",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Increase Seller Productivity",desc:"The reports landing page makes it easier to find and adopt new reports by decreasing visual clutter.",status:"GA",quarters:["Q2"]},
+  {title:"AI-Driven Dynamic Bidding",product:"Revenue Marketing",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Execute advertising with AI-driven precision",desc:"Automatically adjust bids based on intent, engagement, and performance — maximizing efficiency and advertising impact.",status:"Beta",quarters:["Q3","Q4"]},
+  {title:"Objective-Based Campaigns",product:"Revenue Marketing",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Execute advertising with AI-driven precision",desc:"Create campaigns around business objectives — so activation, optimization, and measurement stay aligned to outcomes that matter.",status:"Beta",quarters:["Q3","Q4"]},
+  {title:"Advanced JavaScript-Based Ad Creatives",product:"Revenue Marketing",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Execute advertising with AI-driven precision",desc:"Support dynamic, JavaScript-driven ad creatives — unlocking richer, more personalized advertising experiences across channels.",status:"GA",quarters:["Q1"]},
+  {title:"HTML5 Experience Overhaul",product:"Revenue Marketing",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Execute advertising with AI-driven precision",desc:"Preview HTML5 ads directly in the platform before launch — so teams can validate creative and avoid costly errors.",status:"GA",quarters:["Q3"]},
+  {title:"Bulk Campaign Metadata Management",product:"Enterprise Foundations",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Execute advertising with AI-driven precision",desc:"Enable agencies to update campaign settings and metadata at scale — so large portfolios can be optimized efficiently without manual edits.",status:"GA",quarters:["Q3"]},
+  {title:"Expanded DSP Activation (DV360)",product:"Revenue Marketing",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Execute advertising with AI-driven precision",desc:"Activate audiences across additional DSPs — extending reach while keeping targeting aligned to 6sense intelligence.",status:"Alpha",quarters:["Q3","Q4"]},
+  {title:"Controlled Agency Campaign Management",product:"Enterprise Foundations",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Execute advertising with AI-driven precision",desc:"Allow agencies to manage and execute campaigns on behalf of customers within clearly defined permissions — so execution scales without sacrificing governance.",status:"GA",quarters:["Q4"]},
+  {title:"Expanded IWF Campaign Support",product:"Intelligent Workflows",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Execute advertising with AI-driven precision",desc:"Use Intelligent Workflows with existing display, CTV, TTD, and contextual campaigns — so teams can automate across the full media mix.",status:"GA",quarters:["Q3"]},
+  {title:"Expand DNC Support",product:"Sales Intelligence",outcome:"4",outcomeName:"Trust the System at Scale",theme:"Administer and govern with confidence",desc:"Extend the do not call parameters to ensure compliance and accuracy.",status:"GA",quarters:["Q2"]},
+  {title:"Geolocation Restrictions for User Logins",product:"Enterprise Foundations",outcome:"4",outcomeName:"Trust the System at Scale",theme:"Administer and govern with confidence",desc:"Allow admins to restrict access based on geographic location to reduce unauthorized access and improve security.",status:"GA",quarters:["Q3"]},
+  {title:"Instance Deletion Automation",product:"Enterprise Foundations",outcome:"4",outcomeName:"Trust the System at Scale",theme:"Administer and govern with confidence",desc:"Support automatic deletion of instances for security.",status:"GA",quarters:["Q2"]},
+  {title:"Custom Roles (RBAC)",product:"Enterprise Foundations",outcome:"4",outcomeName:"Trust the System at Scale",theme:"Administer and govern with confidence",desc:"Ability to create custom roles and permissions based on their own unique needs.",status:"GA",quarters:["Q1"]},
+  {title:"MCP Server (AgentForce, Claude, etc.)",product:"Enterprise Foundations",outcome:"4",outcomeName:"Trust the System at Scale",theme:"Administer and govern with confidence",desc:"Enable secure, agent-based integrations with platforms like Agentforce so customers can use AI agents to access 6sense data and actions seamlessly — powering automation, orchestration, and intelligent workflows across their GTM stack.",status:"GA",quarters:["Q2"]},
+  {title:"Enterprise Sandboxes",product:"Enterprise Foundations",outcome:"4",outcomeName:"Trust the System at Scale",theme:"Administer and govern with confidence",desc:"Give teams a safe, enterprise-grade environment to test integrations, data flows, and automation across all 6sense products.",status:"GA",quarters:["Q2"]},
+  {title:"Model Deployment Improvements",product:"Predictive",outcome:"4",outcomeName:"Trust the System at Scale",theme:"Improve orchestration efficiency and reliability",desc:"Improve the speed and accuracy at which models are deployed to deliver quicker time-to-value.",status:"GA",quarters:["Q1"]},
+  {title:"Export Usage Report for Admins",product:"Enterprise Foundations",outcome:"4",outcomeName:"Trust the System at Scale",theme:"Improve orchestration efficiency and reliability",desc:"Give administrators centralized visibility into all export activity across their organization so they can monitor usage and track credit consumption.",status:"GA",quarters:["Q3"]},
+  {title:"Credit Utilization Visibility in DWF",product:"Intelligent Workflows",outcome:"4",outcomeName:"Trust the System at Scale",theme:"Improve orchestration efficiency and reliability",desc:"See how many credits are being used in your data workflows so you can manage allocation appropriately.",status:"GA",quarters:["Q3"]},
+  {title:"User Credit Allocation Enhancements",product:"Enterprise Foundations",outcome:"4",outcomeName:"Trust the System at Scale",theme:"Improve orchestration efficiency and reliability",desc:"Setup monthly automatic allocations/top-ups, bulk credit removals.",status:"GA",quarters:["Q3"]},
+  {title:"Unified Alerts Experience",product:"Enterprise Foundations",outcome:"4",outcomeName:"Trust the System at Scale",theme:"Unlock actionable insights and reporting",desc:"Deliver a unified alert experience that surfaces high-confidence signals across email, Slack, and in-app.",status:"GA",quarters:["Q1"]},
+  {title:"Ad Creative Reporting Enhancements",product:"Revenue Marketing",outcome:"4",outcomeName:"Trust the System at Scale",theme:"Unlock actionable insights and reporting",desc:"Show aggregated metrics for impressions, clicks, and CTRs for all active ad creatives across campaigns.",status:"GA",quarters:["Q3"]},
+  {title:"RevvyAI in Sales Intelligence (Insights)",product:"RevvyAI",outcome:"4",outcomeName:"Trust the System at Scale",theme:"Unlock actionable insights and reporting",desc:"An embedded RevvyAI experience that provides AI-powered guidance, answers, and contextual insights directly on account and people detail pages.",status:"GA",quarters:["Q1"]},
+  {title:"Improve Signal/Activity Visibility (Reporting)",product:"Sales Intelligence",outcome:"4",outcomeName:"Trust the System at Scale",theme:"Unlock actionable insights and reporting",desc:"Give more streamlined signals that have clear recommended actions tied to them.",status:"GA",quarters:["Q3"]}
+];
+
+var OCLS={"1":"o1","2":"o2","3":"o3","4":"o4"};
+var STCLS={"GA":"b-ga","Beta":"b-beta","Alpha":"b-alpha"};
+var QCLS={"Q1":"qtag-q1","Q2":"qtag-q2","Q3":"qtag-q3","Q4":"qtag-q4"};
+var QLABELS={"Q1":"Q1 FY27 · Spring","Q2":"Q2 FY27 · Summer","Q3":"Q3 FY27 · Fall","Q4":"Q4 FY27 · Winter"};
+var OCNAMES={"1":"Fully Understand Your Buyers","2":"Focus on the Right Accounts & People","3":"Act on Buying Signals with Less Friction","4":"Trust the System at Scale"};
+
+var currentView="cards";
+var activeOutcome="all";
+var activeFilters={quarter:"all",product:"all",status:"all"};
+var searchVal="";
+
+function filtered(){
+  return ITEMS.filter(function(item){
+    if(activeOutcome!=="all"&&item.outcome!==activeOutcome)return false;
+    if(activeFilters.quarter!=="all"&&item.quarters.indexOf(activeFilters.quarter)<0)return false;
+    if(activeFilters.product!=="all"&&item.product!==activeFilters.product)return false;
+    if(activeFilters.status!=="all"&&item.status!==activeFilters.status)return false;
+    if(searchVal){
+      var q=searchVal.toLowerCase();
+      if(item.title.toLowerCase().indexOf(q)<0&&item.desc.toLowerCase().indexOf(q)<0&&item.product.toLowerCase().indexOf(q)<0&&item.theme.toLowerCase().indexOf(q)<0)return false;
+    }
+    return true;
+  });
+}
+
+function renderStats(list){}
+
+function openModal(idx){
+  var item=ITEMS[idx];
+  var pill=document.getElementById("mPill");
+  pill.className="modal-pill "+OCLS[item.outcome];
+  pill.textContent=item.outcomeName;
+  document.getElementById("mTitle").textContent=item.title;
+  document.getElementById("mProd").textContent=item.product;
+  document.getElementById("mTheme").textContent=item.theme;
+  document.getElementById("mDesc").textContent=item.desc;
+  document.getElementById("mMeta").innerHTML=
+    '<span class="badge '+(STCLS[item.status]||"b-ga")+'">'+item.status+'</span>'+
+    item.quarters.map(function(q){return '<span class="qtag '+QCLS[q]+'">'+q+' FY27</span>';}).join("");
+  document.getElementById("modalOverlay").classList.add("open");
+}
+
+function renderCards(list){
+  var grid=document.getElementById("cardsGrid");
+  grid.style.padding="10px 14px 24px";
+  grid.style.display="grid";
+  grid.style.gridTemplateColumns="repeat(auto-fill,minmax(280px,1fr))";
+  grid.style.gap="10px";
+  if(!list.length){
+    grid.innerHTML='<div class="empty-msg"><div class="empty-icon">&#9671;</div><p>No initiatives match your filters.</p></div>';
+    return;
+  }
+  grid.innerHTML=list.map(function(item){
+    var idx=ITEMS.indexOf(item);
+    return '<div class="card" onclick="openModal('+idx+')">'+
+      '<div class="ctop">'+
+        '<div class="cpill '+OCLS[item.outcome]+'">'+item.outcomeName+'</div>'+
+        '<div class="ctitle">'+item.title+'</div>'+
+        '<div class="cprod">'+item.product+'</div>'+
+        '<div class="ctheme">'+item.theme+'</div>'+
+      '</div>'+
+      '<div class="cbody">'+
+        '<div class="cdesc">'+item.desc+'</div>'+
+        '<div class="cfooter">'+
+          '<span class="badge '+(STCLS[item.status]||"b-ga")+'">'+item.status+'</span>'+
+          item.quarters.map(function(q){return '<span class="qtag '+QCLS[q]+'">'+q+' FY27</span>';}).join("")+
+        '</div>'+
+      '</div>'+
+    '</div>';
+  }).join("");
+}
+
+function renderTimeline(list){
+  var wrap=document.getElementById("timelineWrap");
+  if(!list.length){
+    wrap.innerHTML='<div class="empty-msg" style="text-align:center;padding:40px 16px;color:#9ca3af"><div class="empty-icon">&#9671;</div><p>No initiatives match your filters.</p></div>';
+    return;
+  }
+
+  var html='<div class="tl-legend">';
+  ["Q1","Q2","Q3","Q4"].forEach(function(q){
+    html+='<div class="tl-qhdr '+q.toLowerCase()+'">'+QLABELS[q]+'</div>';
+  });
+  html+='</div>';
+
+  var outcomes=activeOutcome==="all"?["1","2","3","4"]:[activeOutcome];
+  outcomes.forEach(function(oc){
+    var ocItems=list.filter(function(i){return i.outcome===oc;});
+    if(!ocItems.length)return;
+    var themes=[];
+    ocItems.forEach(function(i){if(themes.indexOf(i.theme)<0)themes.push(i.theme);});
+
+    html+='<div class="tl-section">';
+    html+='<div class="tl-section-hdr"><span class="cpill '+OCLS[oc]+'" style="margin:0">'+OCNAMES[oc]+'</span><span class="tl-section-count">'+ocItems.length+' initiative'+(ocItems.length!==1?'s':'')+'</span></div>';
+
+    themes.forEach(function(theme){
+      var tItems=ocItems.filter(function(i){return i.theme===theme;});
+      html+='<div class="tl-theme-block"><div class="tl-theme-label">'+theme+'</div>';
+      html+='<div class="tl-row">';
+      ["Q1","Q2","Q3","Q4"].forEach(function(q){
+        var qItems=tItems.filter(function(i){return i.quarters.indexOf(q)>=0;});
+        html+='<div class="tl-cell">';
+        qItems.forEach(function(item){
+          var idx=ITEMS.indexOf(item);
+          var isFirst=item.quarters[0]===q;
+          var sClass="s-"+item.status.toLowerCase();
+          html+='<div class="tl-chip '+sClass+'" onclick="openModal('+idx+')" title="'+item.title+' — click for details">';
+          if(isFirst){
+            html+='<div class="tl-chip-title">'+item.title+'</div>'+
+              '<div class="tl-chip-prod">'+item.product+'</div>'+
+              '<div class="tl-chip-foot"><span class="badge '+(STCLS[item.status]||"b-ga")+'" style="font-size:9px;padding:1px 6px">'+item.status+'</span></div>';
+          } else {
+            html+='<div class="tl-continues">&#8594; continues</div>';
+          }
+          html+='</div>';
+        });
+        html+='</div>';
+      });
+      html+='</div></div>';
+    });
+    html+='</div>';
+  });
+
+  wrap.innerHTML=html;
+}
+
+function render(){
+  var list=filtered();
+  renderStats(list);
+  var total=ITEMS.filter(function(i){return activeOutcome==="all"||i.outcome===activeOutcome;}).length;
+  document.getElementById("metaTxt").textContent=list.length===total
+    ?"Showing all "+list.length+" initiatives"
+    :"Showing "+list.length+" of "+total+" initiatives";
+
+  if(currentView==="cards"){
+    document.getElementById("cardsGrid").style.display="grid";
+    document.getElementById("timelineWrap").style.display="none";
+    renderCards(list);
+  } else {
+    document.getElementById("cardsGrid").style.display="none";
+    document.getElementById("timelineWrap").style.display="block";
+    renderTimeline(list);
+  }
+}
+
+// View toggle
+document.getElementById("btnCards").addEventListener("click",function(){
+  currentView="cards";
+  document.getElementById("btnCards").classList.add("active");
+  document.getElementById("btnTimeline").classList.remove("active");
+  render();
+});
+document.getElementById("btnTimeline").addEventListener("click",function(){
+  currentView="timeline";
+  document.getElementById("btnTimeline").classList.add("active");
+  document.getElementById("btnCards").classList.remove("active");
+  render();
+});
+
+// Outcome tabs
+document.querySelectorAll(".otab").forEach(function(tab){
+  tab.addEventListener("click",function(){
+    activeOutcome=tab.dataset.o;
+    document.querySelectorAll(".otab").forEach(function(t){t.classList.remove("active");});
+    tab.classList.add("active");
+    render();
+  });
+});
+
+// Filter buttons
+document.querySelectorAll(".fbtn").forEach(function(btn){
+  btn.addEventListener("click",function(){
+    var f=btn.dataset.f,v=btn.dataset.v;
+    activeFilters[f]=v;
+    document.querySelectorAll(".fbtn[data-f='"+f+"']").forEach(function(b){b.classList.remove("active");});
+    btn.classList.add("active");
+    render();
+  });
+});
+
+// Search
+document.getElementById("srchIn").addEventListener("input",function(e){
+  searchVal=e.target.value.trim();
+  render();
+});
+
+// Modal close
+document.getElementById("modalClose").addEventListener("click",function(){
+  document.getElementById("modalOverlay").classList.remove("open");
+});
+document.getElementById("modalOverlay").addEventListener("click",function(e){
+  if(e.target===document.getElementById("modalOverlay")){
+    document.getElementById("modalOverlay").classList.remove("open");
+  }
+});
+document.addEventListener("keydown",function(e){
+  if(e.key==="Escape") document.getElementById("modalOverlay").classList.remove("open");
+});
+
+render();
+</script>
+</body>
+</html>
