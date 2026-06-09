@@ -160,7 +160,7 @@ body{background:#F0F2F5;min-height:100vh;font-family:-apple-system,BlinkMacSyste
       </div>
       <div class="hdr-eye">FY27 Product Roadmap</div>
       <div class="hdr-title">Product Roadmap Explorer</div>
-      <div class="hdr-sub">4 Strategic Outcomes &nbsp;·&nbsp; 16 Themes &nbsp;·&nbsp; 85 Initiatives</div>
+      <div class="hdr-sub">4 Strategic Outcomes &nbsp;·&nbsp; 16 Themes &nbsp;·&nbsp; 84 Initiatives</div>
     </div>
     <div class="view-toggle">
       <button class="vtbtn active" id="btnCards">
@@ -177,8 +177,8 @@ body{background:#F0F2F5;min-height:100vh;font-family:-apple-system,BlinkMacSyste
 </div>
 
 <div class="outcome-tabs" id="outcomeTabs">
-  <button class="otab active" data-o="all"><span class="otab-num">85</span><span class="otab-lbl">All Initiatives</span></button>
-  <button class="otab" data-o="1"><span class="otab-num">15</span><span class="otab-lbl">Fully Understand Buyers</span></button>
+  <button class="otab active" data-o="all"><span class="otab-num">84</span><span class="otab-lbl">All Initiatives</span></button>
+  <button class="otab" data-o="1"><span class="otab-num">14</span><span class="otab-lbl">Fully Understand Buyers</span></button>
   <button class="otab" data-o="2"><span class="otab-num">15</span><span class="otab-lbl">Focus on Right Accounts</span></button>
   <button class="otab" data-o="3"><span class="otab-num">37</span><span class="otab-lbl">Act with Less Friction</span></button>
   <button class="otab" data-o="4"><span class="otab-num">18</span><span class="otab-lbl">Trust at Scale</span></button>
@@ -240,13 +240,12 @@ body{background:#F0F2F5;min-height:100vh;font-family:-apple-system,BlinkMacSyste
 <script>
 var ITEMS=[
   {title:"Contact Data Enrichment",product:"Signalverse",outcome:"1",outcomeName:"Fully Understand Your Buyers",theme:"Data Quality you can count on",desc:"Adding new data vendors increases the ratio of A/A+ emails and the deliverability to those emails.",status:"GA",quarters:["Q2","Q3"],pbUrl:""},
-  {title:"Improved Email Data",product:"Signalverse",outcome:"1",outcomeName:"Fully Understand Your Buyers",theme:"Data Quality you can count on",desc:"Improving email pattern prediction accuracy will increase the reliability of contact data while reducing dependence on third-party email validation services.",status:"GA",quarters:["Q2"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eToxNzYzYWU5NC0xMzQwLTQ3NjYtOTk4Mi1jZDI2YjMzOGJmZGY="},
   {title:"Firmographic Improvements in Coverage & Accuracy",product:"Signalverse",outcome:"1",outcomeName:"Fully Understand Your Buyers",theme:"Data Quality you can count on",desc:"Segment and analyze accounts with more complete, accurate firmographic data — from size and industry to hierarchy and status.",status:"GA",quarters:["Q4"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eTpiNjY5ZDM1ZS0xYWJiLTQ3OWMtODVhMi0wN2U5YTYzZjlkODA="},
   {title:"Comprehensive People Matching",product:"Signalverse",outcome:"1",outcomeName:"Fully Understand Your Buyers",theme:"Data Quality you can count on",desc:"Improve CRM contact accuracy by reliably matching the right people to the right accounts.",status:"GA",quarters:["Q4"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eTo4NjIwMDEzYS03MWZhLTQwOWYtYmI4YS0zOTc1NzFmNmM5ZTY="},
   {title:"Human-Verified Data Corrections",product:"Signalverse",outcome:"1",outcomeName:"Fully Understand Your Buyers",theme:"Data Quality you can count on",desc:"Continuously improve data accuracy by incorporating expert human review to validate and correct core data — so teams can trust the data powering every decision.",status:"Beta",quarters:["Q3","Q4"],pbUrl:""},
-  {title:"Phone Number Grading",product:"Signalverse",outcome:"1",outcomeName:"Fully Understand Your Buyers",theme:"Data Quality you can count on",desc:"Automatically grade phone numbers by quality and reachability so sales reps can prioritize dials on contacts most likely to connect — reducing wasted credits and improving outbound connect rates.",status:"Beta",quarters:["Q3","Q4"],pbUrl:""},
+  {title:"Phone Number Grading",product:"Signalverse",outcome:"1",outcomeName:"Fully Understand Your Buyers",theme:"Data Quality you can count on",desc:"Automatically grade phone numbers to enable reps to focus on the right contacts first, minimizing wasted effort and boosting outbound connect rates.",status:"GA",quarters:["Q4"],pbUrl:""},
   {title:"Build the Full Buying Group",product:"Signalverse",outcome:"1",outcomeName:"Fully Understand Your Buyers",theme:"Identify the full buying group",desc:"Buying groups are dynamic. Define, identify, and operationalize distinct buying groups across 6sense products, not just in filters.",status:"Beta",quarters:["Q3"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eTo2NjUwZjZiOS02ZGZmLTRmN2YtYTA0OC1mOWI3Mzg1YjNhMjk="},
-  {title:"Know What Technology Your Buyers Actually Use",product:"Signalverse",outcome:"1",outcomeName:"Fully Understand Your Buyers",theme:"Enhanced Technographic Intelligence",desc:"Get clearer, more actionable technographic insights with consistent, easy-to-use attributes everywhere you work.",status:"GA",quarters:["Q3"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eTphZjIzNjg4Yi0zMWZiLTRjM2MtOGVlOS0wNTZkYzIzNjBmOTk="},
+  {title:"Know What Technology Your Buyers Actually Use",product:"Signalverse",outcome:"1",outcomeName:"Fully Understand Your Buyers",theme:"Enhanced Technographic Intelligence",desc:"Get clearer, more actionable technographic insights with consistent, easy-to-use attributes such as technology subcategory.",status:"GA",quarters:["Q3"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eTphZjIzNjg4Yi0zMWZiLTRjM2MtOGVlOS0wNTZkYzIzNjBmOTk="},
   {title:"Web Visits API",product:"Signalverse",outcome:"1",outcomeName:"Fully Understand Your Buyers",theme:"Use transparent 6sense data across your stack",desc:"Gives access to account-level website visit data — so you can identify high-intent accounts, enrich CRMs with visit context, and trigger automated sales workflows.",status:"GA",quarters:["Q2"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eToxZDRlYTIxNS1mYTlmLTRmMjctOTZkNi0wNzIxMjUyZjkzNTk="},
   {title:"Keyword Intent API",product:"Signalverse",outcome:"1",outcomeName:"Fully Understand Your Buyers",theme:"Use transparent 6sense data across your stack",desc:"Delivers secure, scalable programmatic access to 6sense intent signals so RevOps, MOPS, and data science teams can integrate real-time keyword intent into automated workflows, ML models, and custom analytics without relying on manual exports.",status:"Beta",quarters:["Q2","Q3"],pbUrl:""},
   {title:"Technographic API",product:"Signalverse",outcome:"1",outcomeName:"Fully Understand Your Buyers",theme:"Use transparent 6sense data across your stack",desc:"Provides self-service, on-demand API access to 6sense technographics and technology adoption signals, enabling customers to embed graph intelligence directly into their own workflows and downstream systems.",status:"GA",quarters:["Q3"],pbUrl:""},
