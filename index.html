@@ -148,6 +148,43 @@ body{background:#F0F2F5;min-height:100vh;font-family:-apple-system,BlinkMacSyste
 .modal-pb-link:hover{background:#13BBB2;color:#fff}
 .modal-close{position:absolute;top:12px;right:14px;background:none;border:none;font-size:22px;color:#9ca3af;cursor:pointer;line-height:1;padding:2px 6px;border-radius:4px;z-index:1}
 .modal-close:hover{background:#f3f4f6;color:#374151}
+
+/* Voting */
+.vote-section{margin-top:14px;padding-top:14px;border-top:1px solid #f3f4f6}
+.vote-q{font-size:12px;font-weight:600;color:#192232;margin-bottom:8px}
+.vote-opts{display:flex;gap:6px;flex-wrap:wrap}
+.vote-btn{padding:5px 14px;border-radius:20px;border:1.5px solid #d1d5db;background:#fff;font-size:11px;font-weight:500;color:#374151;cursor:pointer;transition:all .15s;outline:none}
+.vote-btn:hover{border-color:#13BBB2;color:#13BBB2}
+.vote-btn.v-not{border-color:#6b7280;background:#f9fafb;color:#6b7280}
+.vote-btn.v-not.selected{background:#6b7280;border-color:#6b7280;color:#fff}
+.vote-btn.v-nice{border-color:#3730a3;background:#eef2ff;color:#3730a3}
+.vote-btn.v-nice.selected{background:#3730a3;border-color:#3730a3;color:#fff}
+.vote-btn.v-crit{border-color:#13BBB2;background:#e6f7f6;color:#0d6e6a}
+.vote-btn.v-crit.selected{background:#13BBB2;border-color:#13BBB2;color:#fff}
+.vote-thanks{font-size:11px;color:#13BBB2;margin-top:6px;font-weight:500;display:none}
+
+/* Click tracker panel */
+.tracker-fab{position:fixed;bottom:20px;right:20px;z-index:150;background:#192232;color:#13BBB2;border:none;border-radius:50%;width:46px;height:46px;font-size:18px;cursor:pointer;box-shadow:0 4px 16px rgba(25,34,50,0.35);transition:all .15s;display:flex;align-items:center;justify-content:center}
+.tracker-fab:hover{background:#13BBB2;color:#192232}
+.tracker-panel{position:fixed;bottom:76px;right:20px;z-index:150;background:#fff;border-radius:12px;box-shadow:0 8px 32px rgba(25,34,50,0.18);width:320px;max-height:480px;overflow:hidden;display:none;flex-direction:column;border:1px solid #e2e8f0}
+.tracker-panel.open{display:flex}
+.tracker-hdr{background:#192232;padding:12px 16px;display:flex;align-items:center;justify-content:space-between}
+.tracker-hdr-title{font-size:13px;font-weight:700;color:#fff}
+.tracker-hdr-sub{font-size:10px;color:rgba(255,255,255,0.45);margin-top:1px}
+.tracker-tabs{display:flex;border-bottom:1px solid #e5e7eb;background:#f8fafc}
+.tracker-tab{flex:1;padding:7px 4px;font-size:10px;font-weight:600;text-align:center;cursor:pointer;border:none;background:none;color:#6b7280;border-bottom:2px solid transparent;outline:none}
+.tracker-tab.active{color:#192232;border-bottom-color:#13BBB2}
+.tracker-body{overflow-y:auto;flex:1;padding:8px}
+.tracker-empty{text-align:center;padding:24px 12px;color:#9ca3af;font-size:12px}
+.tracker-row{display:flex;align-items:center;justify-content:space-between;padding:6px 8px;border-radius:6px;margin-bottom:3px;background:#f8fafc;gap:8px}
+.tracker-row-title{font-size:11px;font-weight:500;color:#192232;flex:1;line-height:1.3}
+.tracker-row-count{font-size:11px;font-weight:700;color:#13BBB2;white-space:nowrap;background:#e6f7f6;padding:2px 8px;border-radius:20px}
+.tracker-vote-label{font-size:10px;padding:2px 7px;border-radius:20px;white-space:nowrap;font-weight:600}
+.tv-not{background:#f3f4f6;color:#6b7280}
+.tv-nice{background:#eef2ff;color:#3730a3}
+.tv-crit{background:#e6f7f6;color:#0d6e6a}
+.tracker-clear{margin:8px;padding:6px;font-size:11px;color:#9ca3af;border:1px solid #e5e7eb;border-radius:6px;background:#fff;cursor:pointer;width:calc(100% - 16px);transition:all .15s}
+.tracker-clear:hover{border-color:#ef4444;color:#ef4444}
 </style>
 </head>
 <body>
@@ -160,7 +197,7 @@ body{background:#F0F2F5;min-height:100vh;font-family:-apple-system,BlinkMacSyste
       </div>
       <div class="hdr-eye">FY27 Product Roadmap</div>
       <div class="hdr-title">Product Roadmap Explorer</div>
-      <div class="hdr-sub">4 Strategic Outcomes &nbsp;·&nbsp; 16 Themes &nbsp;·&nbsp; 84 Initiatives</div>
+      <div class="hdr-sub">4 Strategic Outcomes &nbsp;·&nbsp; 16 Themes &nbsp;·&nbsp; 86 Initiatives</div>
     </div>
     <div class="view-toggle">
       <button class="vtbtn active" id="btnCards">
@@ -177,10 +214,10 @@ body{background:#F0F2F5;min-height:100vh;font-family:-apple-system,BlinkMacSyste
 </div>
 
 <div class="outcome-tabs" id="outcomeTabs">
-  <button class="otab active" data-o="all"><span class="otab-num">84</span><span class="otab-lbl">All Initiatives</span></button>
+  <button class="otab active" data-o="all"><span class="otab-num">86</span><span class="otab-lbl">All Initiatives</span></button>
   <button class="otab" data-o="1"><span class="otab-num">14</span><span class="otab-lbl">Fully Understand Buyers</span></button>
   <button class="otab" data-o="2"><span class="otab-num">15</span><span class="otab-lbl">Focus on Right Accounts</span></button>
-  <button class="otab" data-o="3"><span class="otab-num">37</span><span class="otab-lbl">Act with Less Friction</span></button>
+  <button class="otab" data-o="3"><span class="otab-num">39</span><span class="otab-lbl">Act with Less Friction</span></button>
   <button class="otab" data-o="4"><span class="otab-num">18</span><span class="otab-lbl">Trust at Scale</span></button>
 </div>
 
@@ -229,62 +266,173 @@ body{background:#F0F2F5;min-height:100vh;font-family:-apple-system,BlinkMacSyste
     <div class="modal-body">
       <div class="modal-desc" id="mDesc"></div>
       <div class="modal-meta" id="mMeta"></div>
-      <a class="modal-pb-link" id="mPbLink" href="https://revcity.6sense.com/home/categories/roadmap" target="_blank" rel="noopener">
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1h5v5M5 7l6-6M1 11l4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <span id="mPbLinkText"></span>
-      </a>
+      <div class="vote-section">
+        <div class="vote-q">How important is this to you?</div>
+        <div class="vote-opts">
+          <button class="vote-btn v-not" onclick="castVote(event,'not')">Not important</button>
+          <button class="vote-btn v-nice" onclick="castVote(event,'nice')">Nice-to-have</button>
+          <button class="vote-btn v-crit" onclick="castVote(event,'crit')">Critical</button>
+        </div>
+        <div class="vote-thanks" id="voteThanks">Thanks for your feedback!</div>
+      </div>
     </div>
   </div>
 </div>
 
+<!-- Click tracker FAB -->
+<button class="tracker-fab" id="trackerFab" title="View activity tracker">&#9776;</button>
+<div class="tracker-panel" id="trackerPanel">
+  <div class="tracker-hdr">
+    <div>
+      <div class="tracker-hdr-title">Activity Tracker</div>
+      <div class="tracker-hdr-sub">Persists across sessions &nbsp;·&nbsp; browser only</div>
+    </div>
+  </div>
+  <div class="tracker-tabs">
+    <button class="tracker-tab active" id="tabClicks" onclick="switchTrackerTab('clicks')">Card Clicks</button>
+    <button class="tracker-tab" id="tabVotes" onclick="switchTrackerTab('votes')">Votes</button>
+  </div>
+  <div class="tracker-body" id="trackerBody"></div>
+  <button class="tracker-clear" onclick="clearTracking()">Clear all session data</button>
+</div>
+
 <script>
+var currentModalIdx = null;
+var trackerTabActive = 'clicks';
+
+function recordClick(idx){
+  clickCounts[idx]=(clickCounts[idx]||0)+1;
+  saveToStorage();
+  if(document.getElementById('trackerPanel').classList.contains('open')) refreshTracker();
+}
+
+function switchTrackerTab(tab){
+  trackerTabActive = tab;
+  document.getElementById('tabClicks').classList.toggle('active', tab==='clicks');
+  document.getElementById('tabVotes').classList.toggle('active', tab==='votes');
+  refreshTracker();
+}
+
+function refreshTracker(){
+  var body = document.getElementById('trackerBody');
+  if(trackerTabActive === 'clicks'){
+    var entries = Object.keys(clickCounts).map(function(idx){
+      return {idx:idx, count:clickCounts[idx], title:ITEMS[idx].title};
+    }).sort(function(a,b){return b.count-a.count;});
+    if(!entries.length){
+      body.innerHTML='<div class="tracker-empty">No cards clicked yet this session.</div>';
+      return;
+    }
+    body.innerHTML = entries.map(function(e){
+      return '<div class="tracker-row">'+
+        '<div class="tracker-row-title">'+e.title+'</div>'+
+        '<div class="tracker-row-count">'+e.count+' click'+(e.count!==1?'s':'')+'</div>'+
+      '</div>';
+    }).join('');
+  } else {
+    var VLABELS={'not':'Not important','nice':'Nice-to-have','crit':'Critical'};
+    var VCLS={'not':'tv-not','nice':'tv-nice','crit':'tv-crit'};
+    var entries = Object.keys(votes).map(function(idx){
+      return {idx:idx, vote:votes[idx], title:ITEMS[idx].title};
+    });
+    if(!entries.length){
+      body.innerHTML='<div class="tracker-empty">No votes cast yet this session.</div>';
+      return;
+    }
+    // Group by vote value
+    var groups = {'crit':[],'nice':[],'not':[]};
+    entries.forEach(function(e){ groups[e.vote].push(e); });
+    var html = '';
+    ['crit','nice','not'].forEach(function(v){
+      if(!groups[v].length) return;
+      html += '<div style="font-size:10px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:0.6px;padding:6px 8px 3px">'+VLABELS[v]+'</div>';
+      groups[v].forEach(function(e){
+        html += '<div class="tracker-row">'+
+          '<div class="tracker-row-title">'+e.title+'</div>'+
+          '<span class="tracker-vote-label '+VCLS[v]+'">'+VLABELS[v]+'</span>'+
+        '</div>';
+      });
+    });
+    body.innerHTML = html;
+  }
+}
+
+function clearTracking(){
+  clickCounts={};
+  try{localStorage.removeItem('rm_clicks');}catch(e){}
+  refreshTracker();
+}
+
+document.getElementById('trackerFab').addEventListener('click', function(){
+  var panel = document.getElementById('trackerPanel');
+  panel.classList.toggle('open');
+  if(panel.classList.contains('open')) refreshTracker();
+});
+
+// Close tracker when clicking outside
+document.addEventListener('click', function(e){
+  var panel = document.getElementById('trackerPanel');
+  var fab = document.getElementById('trackerFab');
+  if(panel.classList.contains('open') && !panel.contains(e.target) && e.target !== fab){
+    panel.classList.remove('open');
+  }
+});
+
+
+// Load persisted data from localStorage
+var clickCounts = JSON.parse(localStorage.getItem('rm_clicks')||'{}');
+
+function saveToStorage(){
+  try{localStorage.setItem('rm_clicks',JSON.stringify(clickCounts));}catch(e){}
+}
+
 var ITEMS=[
   {title:"Contact Data Enrichment",product:"Signalverse",outcome:"1",outcomeName:"Fully Understand Your Buyers",theme:"Data Quality you can count on",desc:"Increases the ratio of A/A+ emails and improves deliverability to drive more reliable outbound engagement.",status:"GA",quarters:["Q2","Q3"],pbUrl:""},
   {title:"Firmographic Improvements in Coverage & Accuracy",product:"Signalverse",outcome:"1",outcomeName:"Fully Understand Your Buyers",theme:"Data Quality you can count on",desc:"Segment and analyze accounts with more complete, accurate firmographic data — from size and industry to hierarchy and status.",status:"GA",quarters:["Q4"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eTpiNjY5ZDM1ZS0xYWJiLTQ3OWMtODVhMi0wN2U5YTYzZjlkODA="},
   {title:"Comprehensive People Matching",product:"Signalverse",outcome:"1",outcomeName:"Fully Understand Your Buyers",theme:"Data Quality you can count on",desc:"Improve CRM contact accuracy by reliably matching the right people to the right accounts.",status:"GA",quarters:["Q4"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eTo4NjIwMDEzYS03MWZhLTQwOWYtYmI4YS0zOTc1NzFmNmM5ZTY="},
-  {title:"Human-Verified Data Corrections",product:"Signalverse",outcome:"1",outcomeName:"Fully Understand Your Buyers",theme:"Data Quality you can count on",desc:"Continuously improve data accuracy by incorporating expert human review to validate and correct core data — so teams can trust the data powering every decision.",status:"Beta",quarters:["Q3","Q4"],pbUrl:""},
+  {title:"Human-Verified Data Corrections",product:"Signalverse",outcome:"1",outcomeName:"Fully Understand Your Buyers",theme:"Data Quality you can count on",desc:"Continuously improve data accuracy by incorporating expert human review to validate and correct core data — so teams can trust the data powering every decision.",status:"GA",quarters:["Q3","Q4"],pbUrl:""},
   {title:"Phone Number Grading",product:"Signalverse",outcome:"1",outcomeName:"Fully Understand Your Buyers",theme:"Data Quality you can count on",desc:"Automatically grade phone numbers to enable reps to focus on the right contacts first, minimizing wasted effort and boosting outbound connect rates.",status:"GA",quarters:["Q4"],pbUrl:""},
   {title:"Build the Full Buying Group",product:"Signalverse",outcome:"1",outcomeName:"Fully Understand Your Buyers",theme:"Identify the full buying group",desc:"Buying groups are dynamic. Define, identify, and operationalize distinct buying groups across 6sense products, not just in filters.",status:"Beta",quarters:["Q3"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eTo2NjUwZjZiOS02ZGZmLTRmN2YtYTA0OC1mOWI3Mzg1YjNhMjk="},
   {title:"Know What Technology Your Buyers Actually Use",product:"Signalverse",outcome:"1",outcomeName:"Fully Understand Your Buyers",theme:"Enhanced Technographic Intelligence",desc:"Get clearer, more actionable technographic insights with consistent, easy-to-use attributes such as technology subcategory.",status:"GA",quarters:["Q3"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eTphZjIzNjg4Yi0zMWZiLTRjM2MtOGVlOS0wNTZkYzIzNjBmOTk="},
   {title:"Web Visits API",product:"Signalverse",outcome:"1",outcomeName:"Fully Understand Your Buyers",theme:"Use transparent 6sense data across your stack",desc:"Gives access to account-level website visit data — so you can identify high-intent accounts, enrich CRMs with visit context, and trigger automated sales workflows.",status:"GA",quarters:["Q2"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eToxZDRlYTIxNS1mYTlmLTRmMjctOTZkNi0wNzIxMjUyZjkzNTk="},
-  {title:"Keyword Intent API",product:"Signalverse",outcome:"1",outcomeName:"Fully Understand Your Buyers",theme:"Use transparent 6sense data across your stack",desc:"Delivers secure, scalable programmatic access to 6sense intent signals so RevOps, MOPS, and data science teams can integrate real-time keyword intent into automated workflows, ML models, and custom analytics without relying on manual exports.",status:"Beta",quarters:["Q2","Q3"],pbUrl:""},
+  {title:"Keyword Intent API",product:"Signalverse",outcome:"1",outcomeName:"Fully Understand Your Buyers",theme:"Use transparent 6sense data across your stack",desc:"Delivers secure, scalable programmatic access to 6sense intent signals so RevOps, MOPS, and data science teams can integrate real-time keyword intent into automated workflows, ML models, and custom analytics without relying on manual exports.",status:"GA",quarters:["Q2","Q3"],pbUrl:""},
   {title:"Technographic API",product:"Signalverse",outcome:"1",outcomeName:"Fully Understand Your Buyers",theme:"Use transparent 6sense data across your stack",desc:"Provides self-service, on-demand API access to 6sense technographics and technology adoption signals, enabling customers to embed graph intelligence directly into their own workflows and downstream systems.",status:"GA",quarters:["Q3"],pbUrl:""},
   {title:"People Search & Enrichment API",product:"Signalverse",outcome:"1",outcomeName:"Fully Understand Your Buyers",theme:"Use transparent 6sense data across your stack",desc:"Enables fast, reliable programmatic access to people data at scale to provide context in the systems that you want to use it.",status:"GA",quarters:["Q2"],pbUrl:""},
-  {title:"Use Verified Data Across Your Stack",product:"Signalverse",outcome:"1",outcomeName:"Fully Understand Your Buyers",theme:"Use transparent 6sense data across your stack",desc:"Access verified company and people data directly inside applications — no extra steps required.",status:"Beta",quarters:["Q3"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eTo4MTViZDZhOS01MjMyLTQ2NTUtYjg5ZS00NWUzZjMxODUxOWU="},
+  {title:"Use Verified Data Across Your Stack",product:"Signalverse",outcome:"1",outcomeName:"Fully Understand Your Buyers",theme:"Use transparent 6sense data across your stack",desc:"Access verified company and people data directly inside applications — no extra steps required.",status:"GA",quarters:["Q3"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eTo4MTViZDZhOS01MjMyLTQ2NTUtYjg5ZS00NWUzZjMxODUxOWU="},
   {title:"Pixel Performance Data Packs",product:"Signalverse",outcome:"1",outcomeName:"Fully Understand Your Buyers",theme:"Use transparent 6sense data across your stack",desc:"Track and analyze advertising performance across external ad platforms using simple tracking pixels, and access consistent, account-level engagement data through Data Packs.",status:"GA",quarters:["Q1"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eTo4YWU2ODVmOC04Y2MxLTQxNmItODEyNy00NWRjOWUwY2NmNmY="},
-  {title:"Signal Expansion",product:"Signalverse",outcome:"1",outcomeName:"Fully Understand Your Buyers",theme:"Use transparent 6sense data across your stack",desc:"Build a market-leading Signals experience that lets customers choose, customize, and combine the GTM triggers that matter most — all in one place.",status:"Beta",quarters:["Q2","Q3"],pbUrl:""},
-  {title:"AI-Recommended Leads for Advertising",product:"Revenue Marketing",outcome:"2",outcomeName:"Focus on the Right Accounts & People",theme:"Smarter Advertising Activation",desc:"Automatically identify and activate the most relevant buying-group members within target accounts to improve campaign performance.",status:"GA",quarters:["Q2"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eTowN2NkM2FhMi04NWNmLTQ4OWQtOWM0NC05MGU2NGQ0NzY4ZjU="},
+  {title:"Signal Expansion",product:"Signalverse",outcome:"1",outcomeName:"Fully Understand Your Buyers",theme:"Use transparent 6sense data across your stack",desc:"Build a market-leading Signals experience that lets customers choose, customize, and combine the GTM triggers that matter most — all in one place.",status:"GA",quarters:["Q2","Q3"],pbUrl:""},
+  {title:"AI-Recommended Leads for Advertising",product:"Revenue Marketing",outcome:"2",outcomeName:"Focus on the Right Accounts & People",theme:"Smarter Advertising Activation",desc:"Automatically identify and activate the most relevant buying-group members within target accounts to improve campaign performance.",status:"Beta",quarters:["Q2","Q4"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eTowN2NkM2FhMi04NWNmLTQ4OWQtOWM0NC05MGU2NGQ0NzY4ZjU="},
   {title:"Seamless Google Ads Activation",product:"Revenue Marketing",outcome:"2",outcomeName:"Focus on the Right Accounts & People",theme:"Smarter Advertising Activation",desc:"Reliably sync segments to Google Ads with improved scale, performance, and account management support.",status:"GA",quarters:["Q4"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eToxMmQ0Y2FjNy05MjE2LTQyMWEtODI4Yy0yNGVhMDAyNmZkOWM="},
   {title:"Clearer LinkedIn Campaign Visibility",product:"Revenue Marketing",outcome:"2",outcomeName:"Focus on the Right Accounts & People",theme:"Smarter Advertising Activation",desc:"See advertising performance across multi-country LinkedIn campaigns with campaign- and country-level insights to reduce reporting blind spots.",status:"GA",quarters:["Q3"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eToyMmRmOGEzOS0yODM2LTQxY2ItYmYxYy00MDdhOTA4YWE4ODQ="},
   {title:"Improved LinkedIn Media Data Packs",product:"Revenue Marketing",outcome:"2",outcomeName:"Focus on the Right Accounts & People",theme:"Smarter Advertising Activation",desc:"Use cleaner, easier-to-interpret LinkedIn media fields for reliable analytics and reporting.",status:"GA",quarters:["Q3"],pbUrl:""},
   {title:"More Accurate LinkedIn Account Reporting",product:"Revenue Marketing",outcome:"2",outcomeName:"Focus on the Right Accounts & People",theme:"Smarter Advertising Activation",desc:"Reduce unknown accounts and get clearer, more trustworthy account-level insights from LinkedIn advertising campaigns.",status:"GA",quarters:["Q3"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eTo2ODA3MzFkOS1lNjc3LTRlOTMtOWVmMy1hYzY1ODlhOTY4NDE="},
   {title:"Transparent Scores in Predictive",product:"Predictive",outcome:"2",outcomeName:"Focus on the Right Accounts & People",theme:"Configure buying stages to target the right ICP",desc:"See why scores change so teams can trust the data, understand what's driving outcomes, and act with confidence.",status:"GA",quarters:["Q3"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eTplYmUxYTU2ZS00Y2NhLTQ0YmItOTU3YS1hNjhmYjA0NzRhYzQ="},
-  {title:"ICP Builder (Non-Predictive)",product:"Predictive",outcome:"2",outcomeName:"Focus on the Right Accounts & People",theme:"Configure buying stages to target the right ICP",desc:"Automatically score accounts against essential ICP attributes to focus teams on the right buyers from day one.",status:"GA",quarters:["Q2"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eTo5Mjk4YjNmMi05ZTU4LTRjZTEtYjhmMy0yNDkyNWIxNzJhMGM="},
   {title:"Configurable Buying Stages",product:"Predictive",outcome:"2",outcomeName:"Focus on the Right Accounts & People",theme:"Configure buying stages to target the right ICP",desc:"Define buying stages that match how your customers actually buy — so teams prioritize and engage with shared confidence.",status:"GA",quarters:["Q4"],pbUrl:""},
-  {title:"Accurate Account & People Matching",product:"Enterprise Foundations",outcome:"2",outcomeName:"Focus on the Right Accounts & People",theme:"Segment people and audiences accurately",desc:"Reliably match accounts and people to the 6sense identity graph programmatically (API) so targeting and analytics start with trusted data.",status:"GA",quarters:["Q4"],pbUrl:""},
+  {title:"Accurate Account Matching",product:"Enterprise Foundations",outcome:"2",outcomeName:"Focus on the Right Accounts & People",theme:"Segment people and audiences accurately",desc:"Reliably match accounts to the 6sense identity graph programmatically (API) so targeting and analytics start with trusted data.",status:"GA",quarters:["Q4"],pbUrl:""},
   {title:"People-Based Segmentation",product:"6sense Platform",outcome:"2",outcomeName:"Focus on the Right Accounts & People",theme:"Segment people and audiences accurately",desc:"Target, activate, and analyze buyers at the individual level — not just the account.",status:"Beta",quarters:["Q3","Q4"],pbUrl:"https://6sense.productboard.com/prioritization/MTpQcmlvcml0aXphdGlvbkJvYXJkOmRkZTdhYmM0LTYxZWUtNDQwYy04ODc0LTVmOWIyYmQ3MjdiMg==?s=people+based+segment&d=MTpQbUVudGl0eTpjNzQ1NzlmNi1lZTM1LTRjMjMtYjE1NC00MTI0OTBhNjhiM2I%3D"},
   {title:"Segments API",product:"Revenue Marketing",outcome:"2",outcomeName:"Focus on the Right Accounts & People",theme:"Segment people and audiences accurately",desc:"Keep segments automatically aligned with your CDP, data warehouse, and GTM systems programmatically (API) — so targeting stays current and activation is seamless.",status:"Beta",quarters:["Q1","Q2"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eTplMDhmMjk2YS0wOTdhLTQ2NTgtYTYxOS04YjZlNDY5ZGY4YjI="},
   {title:"Segment Account Exclusions",product:"Revenue Marketing",outcome:"2",outcomeName:"Focus on the Right Accounts & People",theme:"Prioritize accounts and risk effectively",desc:"Remove accounts you know aren't a priority so focus, reporting, and workflows stay aligned on what matters.",status:"GA",quarters:["Q1"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eTplZDg4N2Q5Yi05YTY4LTRkNzctODU0Mi03MDU2OTI4YjhiZTY="},
+  {title:"Segment Sync: Bulk Unsync",product:"Revenue Marketing",outcome:"2",outcomeName:"Focus on the Right Accounts & People",theme:"Segment people and audiences accurately",desc:"Unsync multiple segments from downstream destinations in bulk — so teams can clean up stale activations and manage segment connections at scale without manual one-by-one edits.",status:"GA",quarters:["Q2"],pbUrl:""},
   {title:"Early Deal Risk Visibility",product:"Sales Intelligence",outcome:"2",outcomeName:"Focus on the Right Accounts & People",theme:"Prioritize accounts and risk effectively",desc:"Give ops early insight into at-risk opportunities to improve forecasts and help sales focus on deals most likely to slip.",status:"Beta",quarters:["Q3","Q4"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eTo5N2JkMzZiZS1hMTFkLTQ4NTgtODA1OS03MzA4NmJhMjgyNWM="},
   {title:"Proactive Competitive Threat Alerts",product:"Sales Intelligence",outcome:"2",outcomeName:"Focus on the Right Accounts & People",theme:"Prioritize accounts and risk effectively",desc:"Get notified when competitor activity puts key accounts or deals at risk — across the web app, Chrome Extension, and alerts.",status:"Beta",quarters:["Q3","Q4"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eTo2NTM3M2NjYi1kYjUzLTRhYjMtOThmYS00YWI2NjQ0ZmIxN2Q="},
   {title:"Smarter Contact Unlocking",product:"Sales Intelligence",outcome:"2",outcomeName:"Focus on the Right Accounts & People",theme:"Prioritize accounts and risk effectively",desc:"Spend credits only when the contact data you need is actually available.",status:"GA",quarters:["Q1"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eTo3ZmYyMmU0OC1iMDBlLTQ0NDktYThiNi0wMTk1NjljMTVmNzA="},
-  {title:"RevvyAI in Marketing",product:"Revenue Marketing",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Better Outreach with AI Agents",desc:"Use AI agents to answer questions, analyze performance, and generate insights: 6QA Analyst (Marketing Insights), Keyword Agent, and Campaign Analyst (Advertising).",status:"Beta",quarters:["Q1","Q2"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eTo0ZTJhOGU0My0zMmQ3LTRjZGQtOTVkMy00ZjMwYWYzYjZlMjY="},
+  {title:"RevvyAI in Marketing",product:"Revenue Marketing",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Better Outreach with AI Agents",desc:"Use AI agents to answer questions, analyze performance, and generate insights: 6QA Analyst (Marketing Insights), Keyword Agent, and Campaign Analyst (Advertising). Open Beta in Q1, GA in June.",status:"GA",quarters:["Q1","Q2"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eTo0ZTJhOGU0My0zMmQ3LTRjZGQtOTVkMy00ZjMwYWYzYjZlMjY="},
   {title:"RevvyAI Prioritization Dashboard",product:"Revenue Marketing",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Better Outreach with AI Agents",desc:"Help sellers quickly identify and focus on the highest-priority accounts by combining intent, signals, fit, and AI-driven recommendations in a lightweight, action-oriented view.",status:"GA",quarters:["Q4"],pbUrl:""},
   {title:"AI-Powered Email Personalization v2",product:"Revenue Marketing",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Better Outreach with AI Agents",desc:"Extend the generation of relevant, personalized email content using buyer intent, engagement, and context — so outreach feels timely, human, and scalable.",status:"Beta",quarters:["Q4"],pbUrl:""},
   {title:"Conversational Custom Scenarios v2",product:"Revenue Marketing",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Better Outreach with AI Agents",desc:"Use a conversational interface to create and run custom scenarios — unlocking new use cases without complex setup or technical expertise.",status:"Beta",quarters:["Q4"],pbUrl:""},
   {title:"Gong Call Summaries in 6sense",product:"Sales Intelligence",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Better Outreach with AI Agents",desc:"Use conversation intelligence to prioritize accounts, personalize outreach, and act faster — without leaving 6sense.",status:"GA",quarters:["Q4"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eToyNGVmZjdjYy1lMzM3LTQ1YzAtYTkzNC0yNWVlMjU1MTdmOTU="},
   {title:"LLM-Powered Workflow Nodes",product:"Intelligent Workflows",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Better Outreach with AI Agents",desc:"Use AI to extract structured insights from unstructured content (like job posts or press releases) and automate routing and decisions.",status:"Beta",quarters:["Q3","Q4"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eTo3MDJkMWRmNC1mYzk1LTQ1M2MtYjRmZi05YzU4MjU3ODM4OGM="},
-  {title:"AI Email Campaign Enhancements",product:"Revenue Marketing",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Better Outreach with AI Agents",desc:"A set of enhancements that make AI Email campaigns easier to validate, healthier to run, and faster to convert — including a Campaign Test Mode to preview AI responses before launch, a Campaign Health Coach that surfaces data and audience readiness issues in-flight, and automatic calendar booking links in AI-generated replies at the moment of highest buyer intent.",status:"Beta",quarters:["Q3","Q4"],pbUrl:""},
+  {title:"AI Email Campaign Enhancements",product:"Revenue Marketing",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Better Outreach with AI Agents",desc:"A set of enhancements that make AI Email campaigns easier to validate, healthier to run, and faster to convert — including a Campaign Test Mode to preview AI responses before launch, a Campaign Health Coach that surfaces data and audience readiness issues in-flight, and automatic calendar booking links in AI-generated replies at the moment of highest buyer intent.",status:"GA",quarters:["Q3","Q4"],pbUrl:""},
   {title:"Product-Aware Workflow Creation",product:"Intelligent Workflows",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Automate workflows with signal-triggered intelligence",desc:"Select the relevant product from your stack while building workflows — so setup is simpler and workflows align to the right GTM use case from the start.",status:"GA",quarters:["Q1"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eTo3MjdiN2Q5Mi1mY2JlLTQyYTYtYjc3ZC1kMDJlODZmOTUyZmU="},
   {title:"Audience Workflows Usability & Adoption",product:"Intelligent Workflows",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Automate workflows with signal-triggered intelligence",desc:"Make workflows easier to build, publish, and manage — so teams can activate automation with confidence and less friction.",status:"GA",quarters:["Q1","Q2"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eTo0Yzc5ZWI0Ny03ZDcwLTRmMzctYmYwYS05NWIzOTQxN2E3ZTE="},
-  {title:"Workflow Preview & Simulation",product:"Intelligent Workflows",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Automate workflows with signal-triggered intelligence",desc:"Preview and simulate workflows before activation — so teams can validate logic, routing, and impact before going live.",status:"Beta",quarters:["Q3","Q4"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eTpiYWNmZWJhZC04YWI0LTRkNTEtODQ1Ny1lM2Q5NGYxYjMzNGE="},
+  {title:"Workflow Preview & Simulation",product:"Intelligent Workflows",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Automate workflows with signal-triggered intelligence",desc:"Preview and simulate workflows before activation — so teams can validate logic, routing, and impact before going live.",status:"GA",quarters:["Q3","Q4"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eTpiYWNmZWJhZC04YWI0LTRkNTEtODQ1Ny1lM2Q5NGYxYjMzNGE="},
   {title:"Acquire & Push New Contacts via Workflows",product:"Intelligent Workflows",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Automate workflows with signal-triggered intelligence",desc:"Automatically acquire net-new contacts and push them into sales engagement tools — so teams move from signal to sequence without manual handoffs.",status:"GA",quarters:["Q3"],pbUrl:""},
-  {title:"Trigger-based Workflows",product:"Intelligent Workflows",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Automate workflows with signal-triggered intelligence",desc:"Delivers a complete real-time orchestration system where any meaningful buyer signal — growth, change, intent, or market movement — can trigger an automated workflow.",status:"Beta",quarters:["Q2","Q3"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eTo3YjMwZTZkYy1hMzMwLTQyMzYtODA3MS1hMGNkMGQ4NzUzMjk="},
+  {title:"Trigger-based Workflows",product:"Intelligent Workflows",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Automate workflows with signal-triggered intelligence",desc:"Delivers a complete real-time orchestration system where any meaningful buyer signal — growth, change, intent, or market movement — can trigger an automated workflow.",status:"GA",quarters:["Q2","Q3"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eTo3YjMwZTZkYy1hMzMwLTQyMzYtODA3MS1hMGNkMGQ4NzUzMjk="},
   {title:"Sandbox Support in Workflows",product:"Intelligent Workflows",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Automate workflows with signal-triggered intelligence",desc:"Test and validate workflow logic, audience definitions, and automation actions in a safe sandbox environment before pushing to production — so teams can iterate with confidence and avoid unintended downstream impact.",status:"GA",quarters:["Q2"],pbUrl:""},
   {title:"Error & Audit Log Enhancements in Workflows",product:"Intelligent Workflows",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Automate workflows with signal-triggered intelligence",desc:"Eliminate reconciliation confusion in Workflow Run History by letting admins toggle between CRM Account IDs and 6sense MIDs — so performance data always maps cleanly to the system you're working in.",status:"GA",quarters:["Q4"],pbUrl:""},
   {title:"Chrome Extension for HubSpot CRM",product:"Sales Intelligence",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Connect seamlessly with CRM, MAP & Integrations",desc:"Access 6sense insights and actions directly inside HubSpot CRM record pages to keep prospecting and enrichment in one flow.",status:"GA",quarters:["Q1"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eTo2NDBkZjM2ZS1jYmRmLTRjOTYtYTQxYi1jMmFmMDI1YWUxMDk="},
   {title:"Eloqua OAuth Authentication",product:"Enterprise Foundations",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Connect seamlessly with CRM, MAP & Integrations",desc:"Add OAuth authentication for Eloqua so customers can connect securely, reduce credential issues, and manage authentication more reliably over time.",status:"GA",quarters:["Q3"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eTo1MDBhYjNkZC00ZGVjLTQzNTUtODQxYi1jY2U5NGJiODdmNGI="},
-  {title:"Enhanced CRM Contact Matching",product:"Sales Intelligence",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Connect seamlessly with CRM, MAP & Integrations",desc:"Improve people-to-account matching — so reps see accurate activity, insights, and recommendations tied to the right CRM records.",status:"Beta",quarters:["Q2","Q3"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eToxZGUyOTRiZS1hYjgzLTRhNjEtODJkMy05ODY3YmU0NWE1M2M="},
+  {title:"Enhanced CRM Contact Matching",product:"Sales Intelligence",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Connect seamlessly with CRM, MAP & Integrations",desc:"Improve people-to-account matching — so reps see accurate activity, insights, and recommendations tied to the right CRM records.",status:"GA",quarters:["Q2","Q3"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eToxZGUyOTRiZS1hYjgzLTRhNjEtODJkMy05ODY3YmU0NWE1M2M="},
   {title:"Export Company Hierarchy to Salesforce",product:"Sales Intelligence",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Connect seamlessly with CRM, MAP & Integrations",desc:"Push full company hierarchy data into Salesforce — so teams work from a complete and accurate account structure.",status:"GA",quarters:["Q3"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eTozZDA5ZWJlOC1hZWRlLTRlNmEtYWZiMi1hZjcwYThmMTA4M2Y="},
   {title:"Export to Salesforce Campaigns",product:"Sales Intelligence",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Connect seamlessly with CRM, MAP & Integrations",desc:"Send accounts and contacts directly into Salesforce Campaigns — improving activation, tracking, and attribution.",status:"GA",quarters:["Q2"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eTpmNjg5MzFhZC05N2Y0LTQwNjItODk3MS1lNmQxNzI2ZjM2MDI="},
   {title:"Permission Controls for Salesforce & Salesloft",product:"Sales Intelligence",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Connect seamlessly with CRM, MAP & Integrations",desc:"Give admins fine-grained control over what users can see and do inside Salesforce and Salesloft embedded experiences.",status:"GA",quarters:["Q1","Q2"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eTpkNzU2ZWViMi1hZTM1LTRhMGEtOGJjNi03YjYxZTZhYmE4M2Y="},
@@ -296,6 +444,7 @@ var ITEMS=[
   {title:"Dashboard UX Enhancements (SI)",product:"Sales Intelligence",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Increase Seller Productivity",desc:"Streamline the SI dashboard to help reps find accounts and take action with fewer clicks.",status:"GA",quarters:["Q1"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eTo3NzBkY2IxNS04MmE4LTQ1ZDUtYTViMi1jYWY1MmJjNWNkOTg="},
   {title:"Salesloft Export & Cadence Controls",product:"Sales Intelligence",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Increase Seller Productivity",desc:"Improving flexibility and control for Salesloft users by allowing tag assignment during export and cadence selection.",status:"GA",quarters:["Q1"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eToyMzI3NDA2NS1kNGI1LTQ4NDItOWZhZC0xMDE0ODM1ZGM4NDI="},
   {title:"RevvyAI in Sales Intelligence",product:"Sales Intelligence",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Increase Seller Productivity",desc:"An embedded RevvyAI experience that provides AI-powered guidance, answers, and contextual insights directly on account and people detail pages.",status:"GA",quarters:["Q1"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eTowOWEyOTJiYy0wODYzLTRmNGUtYTllNy0wMmQyMWUxOGEyMjc="},
+  {title:"Chrome Extension for Gong",product:"Sales Intelligence",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Increase Seller Productivity",desc:"Access Gong conversation intelligence directly inside the 6sense Chrome Extension — so reps can act on call insights without switching context.",status:"GA",quarters:["Q2"],pbUrl:""},
   {title:"Lists & Discovery Filter Enhancements",product:"Sales Intelligence",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Increase Seller Productivity",desc:"Retaining input fields for List Enrichment, filters save in Discovery, and support for Blank/Not Blank CRM fields in filters.",status:"GA",quarters:["Q2"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eTplYjQ0MWEzNy1hMTA5LTQ2OTItOWU4MC0yMjhkZDY2YjE3ZDM="},
   {title:"AI-Driven Dynamic Bidding",product:"Revenue Marketing",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Execute advertising with AI-driven precision",desc:"Automatically adjust bids based on intent, engagement, and performance — maximizing efficiency and advertising impact.",status:"Beta",quarters:["Q3","Q4"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eToxMjE3MzY0YS05ODgzLTQ1ZmItYWUwOS01NTI4MGYyN2M5ODg="},
   {title:"Objective-Based Campaigns",product:"Revenue Marketing",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Execute advertising with AI-driven precision",desc:"Create campaigns around business objectives — so activation, optimization, and measurement stay aligned to outcomes that matter.",status:"Beta",quarters:["Q3","Q4"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eToyNWEwMDUyOC0yN2E0LTRmYmUtYjJjNy0xZGQyNzkxMmJjNmQ="},
@@ -305,7 +454,8 @@ var ITEMS=[
   {title:"Expanded DSP Activation (DV360)",product:"Revenue Marketing",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Execute advertising with AI-driven precision",desc:"Activate audiences across additional DSPs — extending reach while keeping targeting aligned to 6sense intelligence.",status:"Beta",quarters:["Q4"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eTpjOTBiNWY5YS00MmFjLTQyMzItYmU4ZS1kNzNiYzE2MzdiN2E="},
   {title:"Controlled Agency Campaign Management",product:"Enterprise Foundations",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Execute advertising with AI-driven precision",desc:"Allow agencies to manage and execute campaigns on behalf of customers within clearly defined permissions — so execution scales without sacrificing governance.",status:"GA",quarters:["Q4"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eToxYmYyNTcxMC03YzViLTRjOTQtYjlkOS1iYzNmYzU0YTRmNDM="},
   {title:"Expanded IWF Campaign Support",product:"Intelligent Workflows",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Execute advertising with AI-driven precision",desc:"Use Intelligent Workflows with existing display, CTV, TTD, and contextual campaigns — so teams can automate across the full media mix.",status:"GA",quarters:["Q3"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eTo0Yzc5ZWI0Ny03ZDcwLTRmMzctYmYwYS05NWIzOTQxN2E3ZTE="},
-  {title:"Improve Signal/Activity Visibility and Usability",product:"Sales Intelligence",outcome:"4",outcomeName:"Trust the System at Scale",theme:"Unlock actionable insights and reporting",desc:"Give more streamlined signals that have clear recommended actions tied to them.",status:"GA",quarters:["Q2"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eTowMzU1MjkyMS1mODg0LTQzNTEtOGYxNC0xYjUwYzA4YTA2M2U="},
+  {title:"IWF: Filtering & Badging in Ads",product:"Intelligent Workflows",outcome:"3",outcomeName:"Act on Buying Signals with Less Friction",theme:"Execute advertising with AI-driven precision",desc:"Filter and badge ads within Intelligent Workflows — so teams can quickly identify, organize, and act on the right campaigns without sifting through irrelevant results.",status:"GA",quarters:["Q2"],pbUrl:""},
+  {title:"Improve Signal/Activity Visibility and Usability",product:"Sales Intelligence",outcome:"4",outcomeName:"Trust the System at Scale",theme:"Unlock actionable insights and reporting",desc:"Give more streamlined signals that have clear recommended actions tied to them.",status:"GA",quarters:["Q3"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eTowMzU1MjkyMS1mODg0LTQzNTEtOGYxNC0xYjUwYzA4YTA2M2U="},
   {title:"Reports Landing Page UX Enhancements",product:"Revenue Marketing",outcome:"4",outcomeName:"Trust the System at Scale",theme:"Unlock actionable insights and reporting",desc:"The reports landing page makes it easier to find and adopt new reports by decreasing visual clutter.",status:"GA",quarters:["Q1"],pbUrl:""},
   {title:"Expand DNC Support",product:"Sales Intelligence",outcome:"4",outcomeName:"Trust the System at Scale",theme:"Administer and govern with confidence",desc:"Extend the do not call parameters to ensure compliance and accuracy.",status:"GA",quarters:["Q2"],pbUrl:""},
   {title:"DNC Phone Number Export Changes in Workflows",product:"Intelligent Workflows",outcome:"4",outcomeName:"Trust the System at Scale",theme:"Administer and govern with confidence",desc:"Introduces visibility into Do Not Call numbers across the 8 countries checked and gives workflow owners explicit control over DNC handling — so teams stay compliant when purchasing and activating contacts through automated workflows.",status:"GA",quarters:["Q2"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eToxYTM0N2EyMy0zMWIwLTQ4YTUtOWI0OC05NTcyMDAxMDczMGI="},
@@ -318,7 +468,7 @@ var ITEMS=[
   {title:"Export Usage Report for Admins",product:"Enterprise Foundations",outcome:"4",outcomeName:"Trust the System at Scale",theme:"Improve orchestration efficiency and reliability",desc:"Give administrators centralized visibility into all export activity across their organization so they can monitor usage and track credit consumption.",status:"GA",quarters:["Q3"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eTo1OWJkMjU4Ni1mZDIwLTQ5N2MtODliNC1mMDRjMzUyMDI0ZDk="},
   {title:"Credit Utilization Visibility in DWF",product:"Intelligent Workflows",outcome:"4",outcomeName:"Trust the System at Scale",theme:"Improve orchestration efficiency and reliability",desc:"See how many credits are being used in your data workflows so you can manage allocation appropriately.",status:"GA",quarters:["Q3"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eTo3MDYzYTEyNy0zZmFmLTRiZTktYmU1OS1lOTdkNTYwM2U2ODY="},
   {title:"User Credit Allocation Enhancements",product:"Enterprise Foundations",outcome:"4",outcomeName:"Trust the System at Scale",theme:"Improve orchestration efficiency and reliability",desc:"Setup monthly automatic allocations/top-ups, bulk credit removals.",status:"GA",quarters:["Q3"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eTo5NTAyYzVlOS04NTRkLTQyMjUtYjcxOS04ODVmN2IxNWQyMjY="},
-  {title:"Unified Alerts Experience",product:"Enterprise Foundations",outcome:"4",outcomeName:"Trust the System at Scale",theme:"Unlock actionable insights and reporting",desc:"Deliver a unified alert experience that surfaces high-confidence signals across email, Slack, and in-app.",status:"GA",quarters:["Q1"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eToyYTBlOTQ2OS02NjIyLTRhYzctYTUxYy01OWViNmRhNmJjYmM="},
+  {title:"Unified Alerts Experience",product:"Enterprise Foundations",outcome:"4",outcomeName:"Trust the System at Scale",theme:"Unlock actionable insights and reporting",desc:"Deliver a unified alert experience that surfaces high-confidence signals across email, Slack, and in-app.",status:"GA",quarters:["Q3"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eToyYTBlOTQ2OS02NjIyLTRhYzctYTUxYy01OWViNmRhNmJjYmM="},
   {title:"Ad Creative Reporting Enhancements",product:"Revenue Marketing",outcome:"4",outcomeName:"Trust the System at Scale",theme:"Unlock actionable insights and reporting",desc:"Show aggregated metrics for impressions, clicks, and CTRs for all active ad creatives across campaigns.",status:"GA",quarters:["Q3"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eTo2NjRlMzgwMS0zNjE5LTQ0ODgtYTAxZC05M2M5Y2FmNGIxN2M="},
   {title:"Buying Stage Impact Reports",product:"Revenue Marketing",outcome:"4",outcomeName:"Trust the System at Scale",theme:"Unlock actionable insights and reporting",desc:"Measure how accounts move through 6sense buying stages over time — tracking progression rates, conversion velocity, and stage distribution trends — so marketing teams can quantify funnel impact and see whether campaigns are moving accounts toward purchase or losing ground.",status:"GA",quarters:["Q2","Q3"],pbUrl:""},
   {title:"Salesforce App Migration (ECA)",product:"Enterprise Foundations",outcome:"4",outcomeName:"Trust the System at Scale",theme:"Administer and govern with confidence",desc:"Ensures compliance with Salesforce's latest security standards and eliminates reliance on deprecated login patterns.",status:"GA",quarters:["Q3"],pbUrl:"https://6sense.productboard.com/detail/MTpQbUVudGl0eTo0OGYxNTRjYi1mYmUyLTQwYWItYTgxOS05YWYzM2ZmYmRlMmY="},
@@ -351,6 +501,8 @@ function filtered(){
 }
 
 function openModal(idx){
+  recordClick(idx);
+  currentModalIdx = idx;
   var item=ITEMS[idx];
   var pill=document.getElementById("mPill");
   pill.className="modal-pill "+OCLS[item.outcome];
@@ -362,9 +514,16 @@ function openModal(idx){
   document.getElementById("mMeta").innerHTML=
     '<span class="badge '+(STCLS[item.status]||"b-ga")+'">'+item.status+'</span>'+
     item.quarters.map(function(q){return '<span class="qtag '+QCLS[q]+'">'+q+' FY27</span>';}).join("");
-  var pbEl=document.getElementById("mPbLink");
-  document.getElementById("mPbLinkText").textContent="Find more details on "+item.title+" with our roadmap cards here";
-  pbEl.style.display="inline-flex";
+  // Restore vote state
+  var currentVote = votes[idx] || null;
+  document.querySelectorAll('.vote-btn').forEach(function(b){ b.classList.remove('selected'); });
+  if(currentVote){
+    var map = {'not':'.v-not','nice':'.v-nice','crit':'.v-crit'};
+    var btn = document.querySelector('.vote-opts '+map[currentVote]);
+    if(btn) btn.classList.add('selected');
+  }
+  document.getElementById('voteThanks').style.display='none';
+  if(document.getElementById('trackerPanel').classList.contains('open')) refreshTracker();
   document.getElementById("modalOverlay").classList.add("open");
 }
 
